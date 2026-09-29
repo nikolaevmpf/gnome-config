@@ -59,6 +59,14 @@
       command = "ghostty";
       binding = "<Primary><Alt>t";
     };
+    settings."org/gnome/desktop/background" = {
+      picture-uri = "";
+      picture-uri-dark = "";
+      picture-options = "none";
+      color-shading-type = "solid";
+      primary-color = "#000000";
+      secondary-color = "#000000";
+    };
     settings."org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   }];
 
