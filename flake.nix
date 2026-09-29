@@ -13,7 +13,17 @@
       ];
     };
 
-    # Add desktop-nvidia and dell outputs after their hardware details
-    # and filesystem layouts have been collected.
+    nixosConfigurations.zet = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./modules/common.nix
+        ./modules/gnome.nix
+        ./modules/gaming.nix
+        ./hosts/zet/default.nix
+      ];
+    };
+
+    # Add 02i0132 and Dell after their hardware and filesystem layouts
+    # have been finalized.
   };
 }
