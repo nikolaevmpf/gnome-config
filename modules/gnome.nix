@@ -18,6 +18,11 @@
       (lib.gvariant.mkTuple [ "xkb" "us" ])
       (lib.gvariant.mkTuple [ "xkb" "ru" ])
     ];
+    settings."org/gnome/shell".favorite-apps = [
+      "firefox.desktop"
+      "com.mitchellh.ghostty.desktop"
+      "org.gnome.Nautilus.desktop"
+    ];
     settings."org/gnome/shell".enabled-extensions = [
       pkgs.gnomeExtensions.dash-to-dock.extensionUuid
     ];
