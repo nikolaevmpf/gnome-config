@@ -2,6 +2,7 @@
 {
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
+  services.xserver.xkb.layout = "us,ru";
 
   # Defaults for new users; existing users can change them in Settings.
   programs.dconf.profiles.user.databases = [{
@@ -11,6 +12,10 @@
       cursor-theme = "Bibata-Modern-Classic";
       gtk-enable-primary-paste = true;
     };
+    settings."org/gnome/desktop/input-sources".sources = [
+      (lib.gvariant.mkTuple [ "xkb" "us" ])
+      (lib.gvariant.mkTuple [ "xkb" "ru" ])
+    ];
     settings."org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   }];
 
