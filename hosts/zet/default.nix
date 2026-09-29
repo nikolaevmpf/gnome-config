@@ -43,11 +43,13 @@
   fileSystems."/games" = {
     device = "/dev/disk/by-uuid/f9e98bf3-948b-4430-9996-d7b62f1487bd";
     fsType = "btrfs";
-    options = [ "subvolid=5" "compress=zstd" "noatime" ];
+    # Mount on access; an unavailable game disk must not hold up boot.
+    # Automount also prevents writes to the system disk at /games.
+    options = [
+      "subvolid=5" "compress=zstd" "noatime"
+      "nofail" "x-systemd.automount" "x-systemd.device-timeout=5s"
+    ];
   };
-  systemd.tmpfiles.rules = [
-    "d /games/SteamLibrary 0755 nikolaev users - -"
-  ];
   hardware.enableRedistributableFirmware = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
