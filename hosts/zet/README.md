@@ -9,8 +9,9 @@
 - `/dev/sdb1` — EFI, UUID `1B70-3CD2`, точка монтирования `/boot`;
 - `/dev/sdb2` — Btrfs, UUID `7bcd30d7-6ded-48b4-b17d-1160840adb72`,
   подтома `@root`, `@home`, `@nix`, `@log`;
-- `/dev/sda` — отдельный Btrfs-диск с меткой `Data`. Профиль его
-  не монтирует и не меняет.
+- `/dev/sda` — отдельный Btrfs-диск с меткой `Data`, UUID
+  `f9e98bf3-948b-4430-9996-d7b62f1487bd`. Он монтируется в `/games`
+  без форматирования; каталог `/games/SteamLibrary` принадлежит `nikolaev`.
 
 ## Первое применение
 
@@ -35,8 +36,12 @@ sudo reboot
 
 ```sh
 nvidia-smi
-findmnt / /home /nix /var/log /boot
+findmnt / /home /nix /var/log /boot /games
 ```
 
 Для последующих изменений используйте
 `sudo nixos-rebuild switch --flake .#zet`.
+
+В Steam откройте **Настройки → Хранилище**, добавьте каталог
+`/games/SteamLibrary` и назначьте его библиотекой по умолчанию.
+Без этого Steam продолжит устанавливать игры в домашний каталог.
