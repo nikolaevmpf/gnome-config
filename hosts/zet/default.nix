@@ -39,7 +39,15 @@
     options = [ "umask=0077" ];
   };
 
-  # Data disk /dev/sda is intentionally not mounted or modified.
+  # Existing Data Btrfs volume: preserve contents and use for Steam games.
+  fileSystems."/games" = {
+    device = "/dev/disk/by-uuid/f9e98bf3-948b-4430-9996-d7b62f1487bd";
+    fsType = "btrfs";
+    options = [ "subvolid=5" "compress=zstd" "noatime" ];
+  };
+  systemd.tmpfiles.rules = [
+    "d /games/SteamLibrary 0755 nikolaev users - -"
+  ];
   hardware.enableRedistributableFirmware = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
