@@ -56,3 +56,35 @@ sudo install -d -o nikolaev -g users -m 0755 /games/SteamLibrary
 библиотеку. В Steam откройте **Настройки → Хранилище**, добавьте каталог
 `/games/SteamLibrary` и назначьте его библиотекой по умолчанию.
 Без этого Steam продолжит устанавливать игры в домашний каталог.
+
+## Руль MOZA R3
+
+Модуль `moza.nix` подключён только в профиле `zet`. Используется встроенный
+драйвер ядра `hid-universal-pidff` для силовой обратной связи (FFB),
+приложение Boxflat и поставляемые с ним правила udev для доступа к устройствам.
+Поддержка драйвера есть в Linux 6.15 и новее, включая используемое ядро 6.18.
+Boxflat позволяет менять настройки базы, руля и педалей; работа FFB в игре
+также зависит от самой игры и версии Proton.
+
+После обновления конфигурации:
+
+```sh
+cd ~/gnome-config
+git pull --ff-only
+sudo nixos-rebuild switch --flake .#zet
+```
+
+Переподключите USB-кабель базы, включите её и запустите **Boxflat** из меню
+GNOME или командой `boxflat`. Запускайте приложение от обычного пользователя.
+Если драйвер не подхватился после применения, перезагрузите компьютер.
+
+Для диагностики с подключённым рулём:
+
+```sh
+lsusb -d 346e:
+lsmod | grep -E 'hid_universal_pidff|cdc_acm'
+sudo journalctl -k -b --no-pager | grep -Ei 'moza|pidff|346e|ttyACM'
+```
+
+Исходные проекты: [Boxflat](https://github.com/Lawstorant/boxflat) и
+[драйвер universal-pidff](https://github.com/JacKeTUs/universal-pidff).
