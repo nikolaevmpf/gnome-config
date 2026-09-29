@@ -1,25 +1,41 @@
 # Домашний игровой компьютер zet
 
-Планируемый профиль NixOS 26.05: общие модули `common.nix`,
-`gnome.nix`, `gaming.nix` и отдельный модуль NVIDIA. Игровой
-модуль включает Steam и GameMode.
+Профиль `.#zet` доступен в `flake.nix`. Он использует NixOS 26.05,
+общие модули GNOME и игровой модуль (Steam, GameMode).
 
-Пока известны только имя `zet` и наличие NVIDIA. Чтобы выбрать
-подходящий драйвер и создать загрузочную конфигурацию, нужны точная
-модель видеокарты, разметка диска после установки и режим загрузки.
-Сейчас `zet` не зарегистрирован в `flake.nix`; запуск
-`nixos-rebuild --flake .#zet` до завершения профиля невозможен.
+Оборудование: ZET Gaming WARD H264, GeForce RTX 4060 Ti (AD106).
+При сборе сведений NixOS уже установлена в режиме UEFI:
 
-На существующей системе соберите:
+- `/dev/sdb1` — EFI, UUID `1B70-3CD2`, точка монтирования `/boot`;
+- `/dev/sdb2` — Btrfs, UUID `7bcd30d7-6ded-48b4-b17d-1160840adb72`,
+  подтома `@root`, `@home`, `@nix`, `@log`;
+- `/dev/sda` — отдельный Btrfs-диск с меткой `Data`. Профиль его
+  не монтирует и не меняет.
+
+## Первое применение
+
+Сверьте UUID по `lsblk -f`. Затем в установленной NixOS:
 
 ```sh
-hostnamectl
-lspci -nnk | grep -A5 -E 'VGA compatible controller|3D controller|Display controller'
-nvidia-smi 2>&1 | head -25
-lsblk -f
-findmnt -R /
-test -d /sys/firmware/efi && echo UEFI || echo BIOS
+git clone https://github.com/nikolaevmpf/gnome-config.git ~/gnome-config
+cd ~/gnome-config
+nix flake lock
+sudo nixos-rebuild build --flake .#zet
+sudo nixos-rebuild boot --flake .#zet
+sudo reboot
 ```
 
-Сообщите, будет ли NixOS устанавливаться на диск целиком, и нужен ли
-сохранённый раздел другой системы. UUID VM и 02i0132 сюда не копировать.
+Если каталог уже существует, вместо `git clone` выполните
+`git pull --ff-only`. Не переходите к `boot`, если `build`
+завершился ошибкой. Предыдущее поколение оставьте в меню загрузки
+до проверки GNOME, NVIDIA и Btrfs.
+
+После перезагрузки проверьте:
+
+```sh
+nvidia-smi
+findmnt / /home /nix /var/log /boot
+```
+
+Для последующих изменений используйте
+`sudo nixos-rebuild switch --flake .#zet`.
