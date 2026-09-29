@@ -1,42 +1,61 @@
-# GNOME NixOS configurations
+# Конфигурации NixOS с GNOME
 
-Nixpkgs: nixos-26.05. The VM profile is based on the installed
-`nikolaevmpf/nixos_install` system and its reported filesystem UUIDs.
-The installer Disko module is intentionally not imported: switching a
-running system must never refer to its placeholder disk path.
+Репозиторий содержит общие модули и отдельные профили для виртуальной машины, десктопа с NVIDIA и ноутбука Dell. Используется ветка `nixos-26.05`.
 
-## VM
+Сейчас готов профиль `vm`. Профили физических компьютеров будут добавлены после получения сведений об их дисках, загрузке и видеокартах.
 
-On the existing VM, check that `lsblk -f` still reports the UUIDs in
-`hosts/vm/default.nix`, then:
+## Структура
+
+- `flake.nix` — доступные конфигурации NixOS.
+- `modules/common.nix` — пользователь, сеть, локаль, звук и автоматическая очистка.
+- `modules/gnome.nix` — GNOME и общие настройки интерфейса.
+- `modules/gaming.nix` — Steam и GameMode для будущих физических компьютеров.
+- `hosts/vm/default.nix` — загрузка, файловые системы и настройки QEMU/KVM.
+
+Профиль VM основан на установленной системе из `nikolaevmpf/nixos_install` и UUID её разделов. Установочный модуль Disko сюда не перенесён: в нём указан временный путь к диску. Начальный пароль из установочного репозитория также не используется.
+
+## Что включено на VM
+
+GNOME с GDM и Wayland, Firefox, Ghostty (Ctrl+Alt+T), Dash to Dock, тёмное оформление, значки Papirus-Dark и курсор Bibata Modern Classic. Раскладки: английская (US) и русская; переключение — Super+пробел. Терминал и другие GNOME приложения, перечисленные в `environment.gnome.excludePackages`, исключены из стандартного набора.
+
+Dash to Dock расположен снизу, скрывается при перекрытии окном, имеет прозрачный фон и не показывает корзину и подключённые диски.
+
+Steam и GameMode **не входят** в профиль VM. Они будут подключены к десктопу и Dell.
+
+## Первое применение на существующей VM
+
+Сначала сравните UUID в выводе `lsblk -f` с `hosts/vm/default.nix`. Затем выполните:
 
 ```sh
 git clone https://github.com/nikolaevmpf/gnome-config.git ~/gnome-config
 cd ~/gnome-config
 nix flake lock
-git add flake.lock
 sudo nixos-rebuild build --flake .#vm
 sudo nixos-rebuild boot --flake .#vm
 sudo reboot
 ```
 
-`nixos-rebuild boot` creates a boot entry without replacing the
-running session. Keep the previous boot entry until GNOME starts and
-the storage mounts are verified. After reboot, use
-`sudo nixos-rebuild switch --flake .#vm` for subsequent changes.
+`nixos-rebuild boot` создаёт новую запись загрузки, не переключая текущую работающую систему. Сохраните прежнее поколение до проверки GNOME и файловых систем после перезагрузки.
 
-If the VM has little available RAM or disk space, builds may fail due
-to resource limits. Check `free -h` and `df -h /nix/store` first.
+Для последующих изменений:
 
-## Future physical hosts
+```sh
+cd ~/gnome-config
+git pull --ff-only
+sudo nixos-rebuild build --flake .#vm
+sudo nixos-rebuild switch --flake .#vm
+```
 
-The shared modules live in `modules/`. Add
-`hosts/desktop-nvidia/default.nix` and `hosts/dell/default.nix`,
-then register their outputs in `flake.nix` after collecting each
-machine's `lspci -nnk`, `lsblk -f`, `findmnt -R /` and existing
-hardware configuration. Each host must specify its own filesystems,
-bootloader and GPU settings. Do not copy VM UUIDs to other hosts.
+Если при `git pull --ff-only` возникнет ошибка из-за локального `flake.lock`, сначала сохраните или зафиксируйте свои локальные изменения. Не удаляйте lock-файл без понимания того, какие версии зависимостей должны использоваться.
 
-Steam and GameMode are in `modules/gaming.nix`. The VM does not import
-this module. Import it for desktop-nvidia and dell when those host
-profiles are added.
+Системные настройки dconf являются значениями **по умолчанию**. Ранее сохранённые настройки пользователя имеют приоритет. Их можно поменять в интерфейсе GNOME или с помощью `gsettings`.
+
+## Автоматическая очистка
+
+Еженедельно удаляются поколения NixOS старше 30 дней и неиспользуемые объекты `/nix/store`; выполняется оптимизация хранилища. Журнал systemd ограничен 500 МБ, а число записей systemd-boot на VM — десять. Данные в `/home` и игры очистка Nix не удаляет.
+
+## Будущие профили
+
+Для десктопа и Dell понадобятся выводы `lspci -nnk`, `lsblk -f`, `findmnt -R /` и текущие файлы аппаратной конфигурации. Каждому компьютеру задаются собственные точки монтирования, загрузчик и настройки GPU. UUID виртуальной машины на другие компьютеры переносить нельзя.
+
+Если VM ограничена по памяти или месту на диске, перед сборкой проверьте `free -h` и `df -h /nix/store`.
