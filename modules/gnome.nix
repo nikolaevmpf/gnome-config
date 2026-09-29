@@ -30,6 +30,14 @@
       show-trash = false;
       show-mounts = false;
     };
+    settings."org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [
+      "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ghostty/"
+    ];
+    settings."org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ghostty" = {
+      name = "Ghostty";
+      command = "ghostty";
+      binding = "<Primary><Alt>t";
+    };
     settings."org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   }];
 
@@ -37,6 +45,7 @@
     pkgs.bibata-cursors
     pkgs.papirus-icon-theme
     pkgs.gnomeExtensions.dash-to-dock
+    pkgs.ghostty
   ];
   environment.sessionVariables.XCURSOR_THEME = "Bibata-Modern-Classic";
 
@@ -48,6 +57,7 @@
   environment.gnome.excludePackages =
     builtins.filter (package: package != null)
       (map (name: lib.attrByPath [ name ] null pkgs) [
+        "gnome-console"
         "gnome-weather"
         "gnome-calendar"
         "gnome-maps"
