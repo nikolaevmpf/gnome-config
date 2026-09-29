@@ -3,6 +3,21 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
   programs.firefox.enable = true;
+
+  # Applications using the default-terminal specification launch Ghostty.
+  xdg.terminal-exec = {
+    enable = true;
+    settings = {
+      GNOME = [ "com.mitchellh.ghostty.desktop" ];
+      default = [ "com.mitchellh.ghostty.desktop" ];
+    };
+  };
+
+  # Add "Open in Ghostty" to the Files context menu.
+  programs.nautilus-open-any-terminal = {
+    enable = true;
+    terminal = "ghostty";
+  };
   services.xserver.xkb.layout = "us,ru";
 
   # Defaults for new users; existing users can change them in Settings.
