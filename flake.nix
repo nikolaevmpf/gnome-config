@@ -9,7 +9,6 @@
       modules = [
         ./modules/common.nix
         ./modules/gnome.nix
-        ./modules/gaming.nix
         ./hosts/vm/default.nix
       ];
     };
