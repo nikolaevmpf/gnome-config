@@ -7,6 +7,7 @@
     "virtio_pci" "virtio_scsi" "virtio_blk"
   ];
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
   fileSystems."/" = {
