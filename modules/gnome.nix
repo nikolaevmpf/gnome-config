@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
@@ -37,7 +37,7 @@
       "firefox.desktop"
       "com.mitchellh.ghostty.desktop"
       "org.gnome.Nautilus.desktop"
-    ];
+    ] ++ lib.optionals config.programs.steam.enable [ "steam.desktop" ];
     settings."org/gnome/shell".enabled-extensions = [
       pkgs.gnomeExtensions.dash-to-dock.extensionUuid
     ];
