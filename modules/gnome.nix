@@ -8,8 +8,12 @@
     settings."org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
       gtk-theme = "Adwaita-dark";
+      cursor-theme = "Bibata-Modern-Classic";
     };
   }];
+
+  environment.systemPackages = [ pkgs.bibata-cursors ];
+  environment.sessionVariables.XCURSOR_THEME = "Bibata-Modern-Classic";
 
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
