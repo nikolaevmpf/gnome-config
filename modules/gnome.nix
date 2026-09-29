@@ -9,6 +9,7 @@
     settings."org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
       gtk-theme = "Adwaita-dark";
+      icon-theme = "Papirus-Dark";
       cursor-theme = "Bibata-Modern-Classic";
       gtk-enable-primary-paste = true;
     };
@@ -19,7 +20,7 @@
     settings."org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   }];
 
-  environment.systemPackages = [ pkgs.bibata-cursors ];
+  environment.systemPackages = [ pkgs.bibata-cursors pkgs.papirus-icon-theme ];
   environment.sessionVariables.XCURSOR_THEME = "Bibata-Modern-Classic";
 
   hardware.graphics.enable = true;
