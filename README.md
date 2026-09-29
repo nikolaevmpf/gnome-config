@@ -37,6 +37,6 @@ machine's `lspci -nnk`, `lsblk -f`, `findmnt -R /` and existing
 hardware configuration. Each host must specify its own filesystems,
 bootloader and GPU settings. Do not copy VM UUIDs to other hosts.
 
-Steam is enabled in the shared gaming module; a Virtio GPU VM may
-launch Steam, but 3D game performance depends on VM graphics
-acceleration or GPU passthrough.
+Steam and GameMode are in `modules/gaming.nix`. The VM does not import
+this module. Import it for desktop-nvidia and dell when those host
+profiles are added.
