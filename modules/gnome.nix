@@ -17,10 +17,27 @@
       (lib.gvariant.mkTuple [ "xkb" "us" ])
       (lib.gvariant.mkTuple [ "xkb" "ru" ])
     ];
+    settings."org/gnome/shell".enabled-extensions = [
+      pkgs.gnomeExtensions.dash-to-dock.extensionUuid
+    ];
+    settings."org/gnome/shell/extensions/dash-to-dock" = {
+      dock-position = "BOTTOM";
+      dock-fixed = false;
+      intellihide = true;
+      autohide = true;
+      transparency-mode = "FIXED";
+      background-opacity = 0.0;
+      show-trash = false;
+      show-mounts = false;
+    };
     settings."org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   }];
 
-  environment.systemPackages = [ pkgs.bibata-cursors pkgs.papirus-icon-theme ];
+  environment.systemPackages = [
+    pkgs.bibata-cursors
+    pkgs.papirus-icon-theme
+    pkgs.gnomeExtensions.dash-to-dock
+  ];
   environment.sessionVariables.XCURSOR_THEME = "Bibata-Modern-Classic";
 
   hardware.graphics.enable = true;
