@@ -20,6 +20,7 @@
 git clone https://github.com/nikolaevmpf/gnome-config.git ~/gnome-config
 cd ~/gnome-config
 nix flake lock
+git add flake.lock
 sudo nixos-rebuild build --flake .#zet
 sudo nixos-rebuild boot --flake .#zet
 sudo reboot
