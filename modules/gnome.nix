@@ -3,6 +3,14 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
+  # Defaults for new users; existing users can change them in Settings.
+  programs.dconf.profiles.user.databases = [{
+    settings."org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "Adwaita-dark";
+    };
+  }];
+
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
