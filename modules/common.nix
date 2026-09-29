@@ -4,10 +4,23 @@
   time.timeZone = "Europe/Moscow";
 
   i18n.defaultLocale = "ru_RU.UTF-8";
-  console.keyMap = "ru";
+  console.keyMap = "us";
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+
+  # Weekly cleanup removes unreferenced store paths and system generations
+  # older than 30 days; recent generations remain available for rollback.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+  nix.optimise = {
+    automatic = true;
+    dates = [ "weekly" ];
+  };
+  services.journald.extraConfig = "SystemMaxUse=500M";
 
   zramSwap.enable = true;
   services.fwupd.enable = true;
