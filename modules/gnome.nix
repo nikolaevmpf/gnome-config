@@ -2,6 +2,7 @@
 {
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
+  programs.firefox.enable = true;
   services.xserver.xkb.layout = "us,ru";
 
   # Defaults for new users; existing users can change them in Settings.
