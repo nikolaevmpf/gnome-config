@@ -60,7 +60,7 @@ ASRock H670M Pro RS, NVIDIA GeForce RTX 2080 Ti (TU102), 32 ГБ ОЗУ, UEFI и
 
 ## Домашний игровой компьютер zet
 
-Профиль `.#zet` в `flake.nix` объединяет общие модули GNOME и `modules/gaming.nix` (Steam и GameMode) с драйвером NVIDIA для RTX 4060 Ti и собственными UUID EFI/Btrfs. Отдельный Btrfs-диск `Data` монтируется без форматирования в `/games`; каталог `/games/SteamLibrary` предназначен для игр Steam. Инструкция по применению — в `hosts/zet/README.md`.
+Профиль `.#zet` в `flake.nix` объединяет общие модули GNOME и `modules/gaming.nix` (Steam и GameMode) с драйвером NVIDIA для RTX 4060 Ti и собственными UUID EFI/Btrfs. Отдельный Btrfs-диск `Data` монтируется без форматирования в `/games`; каталог `/games/SteamLibrary` создаётся после проверки монтирования и предназначен для игр Steam. Инструкция по применению — в `hosts/zet/README.md`.
 
 ## Будущие профили
 
