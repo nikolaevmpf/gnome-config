@@ -11,9 +11,6 @@
       cursor-theme = "Bibata-Modern-Classic";
       gtk-enable-primary-paste = true;
     };
-  }];
-
-  programs.dconf.profiles.user.databases = [{
     settings."org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   }];
 
