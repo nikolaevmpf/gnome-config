@@ -2,7 +2,11 @@
 
 Профиль `.#02i0132`: GNOME/GDM, Firefox, Ghostty, Dash to Dock,
 общие настройки интерфейса, сеть, PipeWire и автоматическая очистка Nix.
-Steam, GameMode и настройки руля в рабочий профиль не включены.
+Для игр включены Steam и GameMode; Steam закреплён в Dash to Dock по умолчанию.
+Для работы установлены LibreOffice, Telegram Desktop, Obsidian, Pinta и Remmina.
+MAX устанавливается автоматически через Flatpak из Flathub при наличии интернета.
+Это упаковка сообщества, использующая приложение из официального репозитория MAX.
+Настройки руля в этот профиль не включены.
 
 Оборудование: ASRock H670M Pro RS, RTX 2080 Ti (TU102), 32 ГБ ОЗУ.
 Загрузка UEFI через systemd-boot; используется стабильный драйвер NVIDIA
@@ -60,3 +64,26 @@ findmnt -t btrfs -o TARGET,SOURCE
 `sudo nixos-rebuild switch --flake .#02i0132`.
 
 Сборка и работа на оборудовании должны быть проверены на этой машине.
+
+## MAX
+
+Первая установка MAX и его среды Flatpak требует интернета и может занять
+несколько минут. При ошибке служба повторяет попытку через минуту.
+
+```sh
+journalctl -u install-max --no-pager -n 50
+flatpak run ru.max.MAX
+```
+
+После первого включения Flatpak выйдите из GNOME и войдите снова, если MAX
+не появился в меню. Последующие обновления MAX выполняются отдельно от NixOS:
+
+```sh
+sudo flatpak update --system ru.max.MAX
+```
+
+Если Steam не появился в Dock из-за сохранённых настроек пользователя:
+
+```sh
+gsettings reset org.gnome.shell favorite-apps
+```
