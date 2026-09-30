@@ -28,6 +28,7 @@
       modules = [
         ./modules/common.nix
         ./modules/gnome.nix
+        ./modules/gaming.nix
         ./hosts/02i0132/default.nix
       ];
     };
