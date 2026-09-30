@@ -88,3 +88,31 @@ sudo flatpak update --system ru.max.MAX
 ```sh
 gsettings reset org.gnome.shell favorite-apps
 ```
+
+## Сон и NVIDIA
+
+Для восстановления после S3 включено сохранение видеопамяти и службы
+NVIDIA suspend/resume. Используется systemd-интерфейс вместо kernel suspend
+notifier; временные данные видеопамяти сохраняются на диске в `/var/tmp`.
+Оставляйте около 12 ГиБ свободного места на его файловой системе.
+
+После изменения этих параметров выполните `nix-update` и перезагрузку.
+Проверьте:
+
+```sh
+grep -E 'PreserveVideoMemoryAllocations|UseKernelSuspendNotifiers|TemporaryFilePath' /proc/driver/nvidia/params
+systemctl status nvidia-suspend.service nvidia-resume.service --no-pager
+df -h /var/tmp
+```
+
+До первого сна службы oneshot могут показывать inactive (dead).
+Сохраните работу перед проверкой `systemctl suspend`.
+При повторной ошибке:
+
+```sh
+sudo journalctl -b -k --no-pager | grep -Ei 'NVRM|Xid|suspend|resume|PM:'
+sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
+```
+
+Эта настройка относится к сну; гибернация на дисковый swap отдельно
+не настроена. Исправление требует проверки на оборудовании.
