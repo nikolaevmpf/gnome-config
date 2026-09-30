@@ -49,7 +49,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    git vim wget curl pciutils usbutils
+    git vim wget curl pciutils usbutils nmap mc 
   ];
 
   # Keep the state version from the original installation.
