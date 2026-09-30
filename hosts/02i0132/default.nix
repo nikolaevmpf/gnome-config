@@ -4,13 +4,14 @@
 
   networking.hostName = "02i0132";
 
+  programs.amnezia-vpn.enable = true;
+
   environment.systemPackages = with pkgs; [
     libreoffice
     telegram-desktop
     obsidian
     pinta
     remmina
-    vscode
     transmission_4-gtk
   ];
 
