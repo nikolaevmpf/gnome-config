@@ -10,6 +10,7 @@
     obsidian
     pinta
     remmina
+    transmission_4-gtk
   ];
 
   # MAX is distributed via the community Flatpak wrapper on Flathub.
