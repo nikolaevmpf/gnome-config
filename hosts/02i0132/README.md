@@ -116,3 +116,14 @@ sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 
 Эта настройка относится к сну; гибернация на дисковый swap отдельно
 не настроена. Исправление требует проверки на оборудовании.
+
+## Amnezia VPN
+
+Клиент и его фоновая служба включены через
+`programs.amnezia-vpn.enable = true;`.
+После применения конфигурации откройте Amnezia VPN в меню GNOME
+и импортируйте свой ключ или конфигурацию подключения.
+Проверка службы: `systemctl status AmneziaVPN --no-pager`.
+
+VS Code временно исключён из списка пакетов из-за сброса соединения
+при скачивании архива с сервера Microsoft.
