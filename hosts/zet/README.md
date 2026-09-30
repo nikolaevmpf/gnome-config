@@ -88,3 +88,42 @@ sudo journalctl -k -b --no-pager | grep -Ei 'moza|pidff|346e|ttyACM'
 
 Исходные проекты: [Boxflat](https://github.com/Lawstorant/boxflat) и
 [драйвер universal-pidff](https://github.com/JacKeTUs/universal-pidff).
+
+## Сон и восстановление NVIDIA
+
+Включено сохранение видеопамяти и службы NVIDIA suspend/resume,
+как в профиле `02i0132`. Снимок видеопамяти хранится на диске в `/var/tmp`.
+После применения новых параметров нужна перезагрузка:
+
+```sh
+nix-update
+sudo reboot
+```
+
+Если команда `nix-update` ещё не установлена:
+
+```sh
+cd ~/gnome-config
+git pull --ff-only
+sudo nixos-rebuild switch --flake .#zet
+sudo reboot
+```
+
+После загрузки проверьте настройки и свободное место:
+
+```sh
+grep -E 'PreserveVideoMemoryAllocations|UseKernelSuspendNotifiers|TemporaryFilePath' /proc/driver/nvidia/params
+df -h /var/tmp
+nvidia-smi --query-gpu=memory.total --format=csv
+```
+
+Для снимка оставляйте свободное место не меньше объёма видеопамяти
+плюс около 5% запаса. Сохраните работу перед проверкой `systemctl suspend`.
+Эта настройка требует проверки на оборудовании и не настраивает гибернацию.
+
+При повторной проблеме после перезагрузки соберите предыдущий журнал:
+
+```sh
+sudo journalctl -b -1 -k --no-pager | grep -Ei 'NVRM|Xid|suspend|resume|PM:'
+sudo journalctl -b -1 -u nvidia-suspend.service -u nvidia-resume.service --no-pager
+```
