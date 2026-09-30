@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   networking.networkmanager.enable = true;
+  networking.firewall.enable = true;
   time.timeZone = "Europe/Moscow";
 
   i18n.defaultLocale = "ru_RU.UTF-8";
@@ -34,6 +35,7 @@
 
   services.openssh = {
     enable = true;
+    openFirewall = true;
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = true;
