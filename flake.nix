@@ -23,7 +23,15 @@
       ];
     };
 
-    # Add 02i0132 and Dell after their hardware and filesystem layouts
-    # have been finalized.
+    nixosConfigurations."02i0132" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./modules/common.nix
+        ./modules/gnome.nix
+        ./hosts/02i0132/default.nix
+      ];
+    };
+
+    # Add Dell after its hardware and filesystem layout have been finalized.
   };
 }
