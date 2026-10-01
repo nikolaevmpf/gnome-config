@@ -43,6 +43,7 @@
     ];
     settings."org/gnome/shell/extensions/dash-to-dock" = {
       dock-position = "BOTTOM";
+      click-action = "minimize";
       dock-fixed = false;
       intellihide = true;
       autohide = true;
