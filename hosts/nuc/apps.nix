@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  imports = [ ./virtualisation.nix ];
+
   programs.amnezia-vpn.enable = true;
 
   environment.systemPackages = with pkgs; [
