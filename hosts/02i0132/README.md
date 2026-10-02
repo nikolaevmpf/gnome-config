@@ -125,5 +125,5 @@ sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 и импортируйте свой ключ или конфигурацию подключения.
 Проверка службы: `systemctl status AmneziaVPN --no-pager`.
 
-VS Code временно исключён из списка пакетов из-за сброса соединения
-при скачивании архива с сервера Microsoft.
+VS Code снова включён в список пакетов. Для его скачивания необходим
+доступ к серверу Microsoft; при сбросе соединения проверьте сеть или VPN.
