@@ -8,6 +8,7 @@
     obsidian
     pinta
     remmina
+    vscode
     transmission_4-gtk
   ];
 
