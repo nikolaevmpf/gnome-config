@@ -12,7 +12,7 @@
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # System disk identified by filesystem UUIDs; /dev/sdX names may change.
+  # Системный диск идентифицируется по UUID файловой системы; имена /dev/sdX могут изменяться.
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/7bcd30d7-6ded-48b4-b17d-1160840adb72";
     fsType = "btrfs";
@@ -39,7 +39,7 @@
     options = [ "umask=0077" ];
   };
 
-  # Existing Data Btrfs volume: preserve contents and use for Steam games.
+  # Диск с играми идентифицируется по UUID файловой системы; имена /dev/sdX могут изменяться.
   fileSystems."/games" = {
     device = "/dev/disk/by-uuid/20b6bd92-e375-402e-a18c-abe43cf65b79";
     fsType = "btrfs";
@@ -53,3 +53,8 @@
   hardware.enableRedistributableFirmware = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
+# Вместо /etc/hosts, используемого в NixOS, можно использовать этот параметр для сопоставления IP-адресов с именами хостов.
+networking.hosts = {
+  "192.168.1.59" = [ "zet" ];
+  "192.168.1.149" = [ "nuc" ];
+};
