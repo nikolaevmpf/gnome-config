@@ -38,9 +38,10 @@
     fsType = "ext4";
     options = [ "noatime" "nofail" "x-systemd.automount" "x-systemd.device-timeout=5s" ];
   };
+
+  # Статические записи для локальной сети.
+  networking.hosts = {
+    "192.168.1.59" = [ "zet" ];
+    "192.168.1.149" = [ "nuc" ];
+  };
 }
-# Вместо /etc/hosts, используемого в NixOS, можно использовать этот параметр для сопоставления IP-адресов с именами хостов.
-networking.hosts = {
-  "192.168.1.59" = [ "zet" ];
-  "192.168.1.149" = [ "nuc" ];
-};
