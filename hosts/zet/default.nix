@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  imports = [ ./nvidia.nix ./moza.nix ];
+  imports = [ ./nvidia.nix ./moza.nix ./terminal.nix ];
 
   networking.hostName = "zet";
 
