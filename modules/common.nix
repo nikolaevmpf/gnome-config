@@ -10,11 +10,6 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
 
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
   # Weekly cleanup removes unreferenced store paths and system generations
   # older than 30 days; recent generations remain available for rollback.
   nix.gc = {
