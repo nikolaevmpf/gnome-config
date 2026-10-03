@@ -52,9 +52,10 @@
   };
   hardware.enableRedistributableFirmware = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  # Статические записи для локальной сети.
+  networking.hosts = {
+    "192.168.1.59" = [ "zet" ];
+    "192.168.1.149" = [ "nuc" ];
+  };
 }
-# Вместо /etc/hosts, используемого в NixOS, можно использовать этот параметр для сопоставления IP-адресов с именами хостов.
-networking.hosts = {
-  "192.168.1.59" = [ "zet" ];
-  "192.168.1.149" = [ "nuc" ];
-};
