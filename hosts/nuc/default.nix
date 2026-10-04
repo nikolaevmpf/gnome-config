@@ -2,6 +2,11 @@
 {
   imports = [ ./hardware.nix ./apps.nix ./terminal.nix ];
   networking.hostName = "nuc";
+
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "nikolaev";
+  };
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
