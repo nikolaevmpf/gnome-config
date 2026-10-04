@@ -4,6 +4,11 @@
 
   networking.hostName = "zet";
 
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "nikolaev";
+  };
+
   environment.systemPackages = [ pkgs.transmission_4-gtk ];
 
   boot.initrd.availableKernelModules = [
