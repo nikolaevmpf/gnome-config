@@ -1,8 +1,10 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
-  imports = [ ./nvidia.nix ./moza.nix ./terminal.nix ];
+  imports = [ ./nvidia.nix ./moza.nix ./terminal.nix ./virtualisation.nix ];
 
   networking.hostName = "zet";
+
+  environment.systemPackages = [ pkgs.transmission_4-gtk ];
 
   boot.initrd.availableKernelModules = [
     "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sr_mod"
