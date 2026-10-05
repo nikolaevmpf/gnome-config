@@ -12,7 +12,7 @@
     obsidian
     pinta
     remmina
-    vscode
+    zed-editor
     transmission_4-gtk
   ];
 
