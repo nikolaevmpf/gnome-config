@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 {
-  imports = [ ./nvidia.nix ./terminal.nix ];
+  imports = [ ./nvidia.nix ./terminal.nix ./virtualisation.nix ];
 
   networking.hostName = "02i0132";
 
