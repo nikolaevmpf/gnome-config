@@ -54,6 +54,11 @@ sudo nixos-rebuild switch --flake .#vm
 
 Еженедельно удаляются поколения NixOS старше 30 дней и неиспользуемые объекты `/nix/store`; выполняется оптимизация хранилища. Журнал systemd ограничен 500 МБ, а число записей systemd-boot на VM — десять. Данные в `/home` и игры очистка Nix не удаляет.
 
+## Редакторы кода
+
+VS Code и Zed не устанавливаются профилями `nuc` и `02i0132`.
+Удаление пакетов из конфигурации не удаляет личные настройки редакторов.
+
 ## Рабочий компьютер 02i0132
 
 ASRock H670M Pro RS, NVIDIA GeForce RTX 2080 Ti (TU102), 32 ГБ ОЗУ, UEFI и один SSD 512 ГБ (`/dev/sda` в Arch). NixOS установлена. Профиль `.#02i0132` зарегистрирован в `flake.nix`: GNOME, стабильный драйвер NVIDIA, UEFI и собственные UUID EFI/Btrfs. Включены Steam и GameMode, LibreOffice, Telegram, Obsidian, Pinta и Remmina; MAX устанавливается автоматически через Flatpak из Flathub. Инструкция по применению и проверке UUID — в [hosts/02i0132/README.md](hosts/02i0132/README.md). **Не применяйте `.#vm` на рабочем компьютере:** там UUID виртуальной машины.
