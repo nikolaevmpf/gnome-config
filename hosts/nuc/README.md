@@ -8,7 +8,7 @@ Intel Wireless 8265, UEFI.
 modules/common.nix, modules/gnome.nix, modules/gaming.nix.
 Набор приложений соответствует 02i0132, включая Steam, GameMode,
 LibreOffice, Telegram, MAX, Obsidian, Pinta, Remmina, Transmission
-и Amnezia VPN. VS Code включён в nuc и 02i0132.
+и Amnezia VPN. VS Code и Zed не включены в эти профили.
 
 UUID установленной NixOS:
 - EFI: 2AE2-E8A4.
@@ -76,5 +76,3 @@ virsh -c qemu:///system list --all
 Последующие изменения применяются командой nix-update.
 До первого применения hostname nixos относится к базовой установке:
 не запускайте автоматический выбор профиля, используйте явно .#nuc.
-Если VS Code не скачивается с Microsoft, подключите VPN или временно
-исключите vscode из hosts/nuc/apps.nix и повторите сборку.
