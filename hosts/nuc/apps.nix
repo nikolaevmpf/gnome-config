@@ -10,6 +10,7 @@
     obsidian
     pinta
     remmina
+    zed-editor
     transmission_4-gtk
   ];
 
