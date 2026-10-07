@@ -125,5 +125,4 @@ sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 и импортируйте свой ключ или конфигурацию подключения.
 Проверка службы: `systemctl status AmneziaVPN --no-pager`.
 
-VS Code снова включён в список пакетов. Для его скачивания необходим
-доступ к серверу Microsoft; при сбросе соединения проверьте сеть или VPN.
+VS Code и Zed не включены в профиль.
