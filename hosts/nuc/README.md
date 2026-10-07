@@ -8,7 +8,7 @@ Intel Wireless 8265, UEFI.
 modules/common.nix, modules/gnome.nix, modules/gaming.nix.
 Набор приложений соответствует 02i0132, включая Steam, GameMode,
 LibreOffice, Telegram, MAX, Obsidian, Pinta, Remmina, Transmission
-и Amnezia VPN. VS Code и Zed не включены в эти профили.
+и Amnezia VPN. В nuc и 02i0132 включён Zed (`zed-editor`); запуск: `zeditor`. VS Code не включён.
 
 UUID установленной NixOS:
 - EFI: 2AE2-E8A4.
