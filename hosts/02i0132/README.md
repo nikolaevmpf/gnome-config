@@ -125,4 +125,4 @@ sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 и импортируйте свой ключ или конфигурацию подключения.
 Проверка службы: `systemctl status AmneziaVPN --no-pager`.
 
-VS Code и Zed не включены в профиль.
+В профиль включён Zed (`zed-editor`); запуск из меню GNOME или командой `zeditor`. VS Code не включён.
