@@ -43,6 +43,14 @@
       ];
     };
 
-    # Add Dell after its hardware and filesystem layout have been finalized.
+    nixosConfigurations.dell = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./modules/common.nix
+        ./modules/gnome.nix
+        ./modules/gaming.nix
+        ./hosts/dell/default.nix
+      ];
+    };
   };
 }
