@@ -106,4 +106,17 @@ nix-update --upgrade
 
 ## Home Manager
 
-Пользовательские приложения и GNOME перенесены в `home/`; Ghostty — в `home/nikolaev.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](HOME-MANAGER.md).
+Пользовательские приложения и GNOME перенесены в `home/`; настройки GNOME, Dash to Dock и Ghostty — отдельно для каждого хоста в `home/hosts/`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](HOME-MANAGER.md).
+
+## Настройки каждого компьютера
+
+Для каждого имени `vm`, `zet`, `nuc`, `02i0132`, `dell`:
+
+| Файл | Что настраивает |
+|---|---|
+| `home/hosts/<хост>-gnome.nix` | Тема, фон, раскладки, горячие клавиши GNOME |
+| `home/hosts/<хост>-dock.nix` | Dash to Dock и закреплённые приложения |
+| `home/hosts/<хост>.nix` | Пользовательские приложения и Ghostty |
+| `hosts/<хост>/` | Оборудование и системные настройки |
+
+Применение на нужном компьютере: `nix-update`. Текущие значения сохранены, профили GNOME/Dock друг друга не импортируют.

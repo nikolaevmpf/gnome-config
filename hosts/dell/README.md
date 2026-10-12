@@ -48,4 +48,4 @@ virsh -c qemu:///system list --all
 
 ## Home Manager
 
-Пользовательские приложения и GNOME перенесены в `home/`; Ghostty — в `home/nikolaev.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).
+Пользовательские приложения и GNOME перенесены в `home/`; GNOME — в `home/hosts/dell-gnome.nix`, Dock — в `home/hosts/dell-dock.nix`, приложения и Ghostty — в `home/hosts/dell.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).

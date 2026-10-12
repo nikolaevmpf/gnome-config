@@ -1,4 +1,5 @@
-{ lib, pkgs, osConfig, ... }:
+# Настройки GNOME только для zet.
+{ lib, pkgs, ... }:
 {
   dconf.enable = true;
   dconf.settings = {
@@ -13,25 +14,6 @@
       (lib.gvariant.mkTuple [ "xkb" "us" ])
       (lib.gvariant.mkTuple [ "xkb" "ru" ])
     ];
-    "org/gnome/shell".favorite-apps = [
-      "firefox.desktop"
-      "com.mitchellh.ghostty.desktop"
-      "org.gnome.Nautilus.desktop"
-    ] ++ lib.optionals osConfig.programs.steam.enable [ "steam.desktop" ];
-    "org/gnome/shell".enabled-extensions = [
-      pkgs.gnomeExtensions.dash-to-dock.extensionUuid
-    ];
-    "org/gnome/shell/extensions/dash-to-dock" = {
-      dock-position = "BOTTOM";
-      click-action = "minimize";
-      dock-fixed = false;
-      intellihide = true;
-      autohide = true;
-      transparency-mode = "FIXED";
-      background-opacity = 0.0;
-      show-trash = false;
-      show-mounts = false;
-    };
     "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [
       "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ghostty/"
     ];
@@ -50,6 +32,6 @@
     };
     "org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
   };
-  home.packages = [ pkgs.firefox pkgs.bibata-cursors pkgs.papirus-icon-theme pkgs.gnomeExtensions.dash-to-dock ];
+  home.packages = [ pkgs.firefox pkgs.bibata-cursors pkgs.papirus-icon-theme ];
   home.sessionVariables.XCURSOR_THEME = "Bibata-Modern-Classic";
 }
