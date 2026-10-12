@@ -126,3 +126,7 @@ sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 Проверка службы: `systemctl status AmneziaVPN --no-pager`.
 
 В профиль включён Zed (`zed-editor`); запуск из меню GNOME или командой `zeditor`. VS Code не включён.
+
+## Home Manager
+
+Пользовательские приложения и GNOME перенесены в `home/`; Ghostty — в `home/hosts/<профиль>-ghostty.conf`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).

@@ -76,3 +76,7 @@ virsh -c qemu:///system list --all
 Последующие изменения применяются командой nix-update.
 До первого применения hostname nixos относится к базовой установке:
 не запускайте автоматический выбор профиля, используйте явно .#nuc.
+
+## Home Manager
+
+Пользовательские приложения и GNOME перенесены в `home/`; Ghostty — в `home/hosts/<профиль>-ghostty.conf`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).

@@ -4,6 +4,5 @@
   boot.kernelModules = [ "hid-universal-pidff" "cdc_acm" "uinput" ];
 
   # Configure the wheelbase, steering wheel and pedals from GNOME.
-  environment.systemPackages = [ pkgs.boxflat ];
   services.udev.packages = [ pkgs.boxflat ];
 }

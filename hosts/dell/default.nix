@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 {
-  imports = [ ./terminal.nix ./virtualisation.nix ];
+  imports = [ ./virtualisation.nix ];
   networking.hostName = "dell";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   boot.loader.systemd-boot.enable = true;
@@ -13,7 +13,6 @@
   hardware.bluetooth.enable = true;
   services.libinput.enable = true;
   services.power-profiles-daemon.enable = true;
-  environment.systemPackages = [ pkgs.libreoffice pkgs.transmission_4-gtk ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/2629ed44-c0b4-447f-b5bf-8df2f8bc698b";

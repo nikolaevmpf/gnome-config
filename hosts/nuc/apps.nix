@@ -4,15 +4,6 @@
 
   programs.amnezia-vpn.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    libreoffice
-    telegram-desktop
-    obsidian
-    pinta
-    remmina
-    zed-editor
-    transmission_4-gtk
-  ];
 
   # MAX is distributed via the community Flatpak wrapper on Flathub.
   services.flatpak.enable = true;

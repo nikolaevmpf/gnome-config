@@ -3,10 +3,17 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-  outputs = { nixpkgs, ... }: {
+  inputs.home-manager = {
+    url = "github:nix-community/home-manager/release-26.05";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { nixpkgs, home-manager, ... }: {
     nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        home-manager.nixosModules.home-manager
+        ./modules/home-manager.nix
         ./modules/common.nix
         ./modules/gnome.nix
         ./hosts/vm/default.nix
@@ -16,6 +23,8 @@
     nixosConfigurations.zet = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        home-manager.nixosModules.home-manager
+        ./modules/home-manager.nix
         ./modules/common.nix
         ./modules/gnome.nix
         ./modules/gaming.nix
@@ -26,6 +35,8 @@
     nixosConfigurations."02i0132" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        home-manager.nixosModules.home-manager
+        ./modules/home-manager.nix
         ./modules/common.nix
         ./modules/gnome.nix
         ./modules/gaming.nix
@@ -36,6 +47,8 @@
     nixosConfigurations.nuc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        home-manager.nixosModules.home-manager
+        ./modules/home-manager.nix
         ./modules/common.nix
         ./modules/gnome.nix
         ./modules/gaming.nix
@@ -46,6 +59,8 @@
     nixosConfigurations.dell = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        home-manager.nixosModules.home-manager
+        ./modules/home-manager.nix
         ./modules/common.nix
         ./modules/gnome.nix
         ./modules/gaming.nix

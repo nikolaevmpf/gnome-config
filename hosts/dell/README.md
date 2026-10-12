@@ -45,3 +45,7 @@ virsh -c qemu:///system list --all
 Проверьте звук, Bluetooth, тачпад, яркость, батарею и восстановление после сна.
 Гибернация на дисковый swap не настроена; zram используется для обычного swap.
 Конфигурация не форматирует диск. Сборка и работа на ноутбуке требуют проверки.
+
+## Home Manager
+
+Пользовательские приложения и GNOME перенесены в `home/`; Ghostty — в `home/hosts/<профиль>-ghostty.conf`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).

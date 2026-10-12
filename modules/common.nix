@@ -91,6 +91,9 @@
           nix flake update --flake "path:$repo"
         fi
         
+        # Создать недостающий lock от пользователя, сохранив существующие версии.
+        nix flake lock "path:$repo"
+        
         echo "Применяю профиль ${if config.networking.hostName == "nixos" then "vm" else config.networking.hostName}…"
         /run/wrappers/bin/sudo /run/current-system/sw/bin/nixos-rebuild switch --flake "path:$repo#${if config.networking.hostName == "nixos" then "vm" else config.networking.hostName}"
         echo "Обновление завершено."

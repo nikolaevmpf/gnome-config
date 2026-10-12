@@ -1,6 +1,6 @@
 { ... }:
 {
-  imports = [ ./hardware.nix ./apps.nix ./terminal.nix ];
+  imports = [ ./hardware.nix ./apps.nix ];
   networking.hostName = "nuc";
 
   services.displayManager.autoLogin = {
