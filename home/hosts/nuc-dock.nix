@@ -6,6 +6,10 @@
       "firefox.desktop"
       "com.mitchellh.ghostty.desktop"
       "org.gnome.Nautilus.desktop"
+      "virt-manager.desktop"
+      "obsidian.desktop"
+      "ru.max.MAX.desktop"
+      "org.telegram.desktop.desktop"
     ] ++ lib.optionals osConfig.programs.steam.enable [ "steam.desktop" ];
     "org/gnome/shell".enabled-extensions = [
       pkgs.gnomeExtensions.dash-to-dock.extensionUuid
