@@ -1,5 +1,5 @@
 # Настройки Dash to Dock только для nuc.
-{ lib, pkgs, osConfig, ... }:
+{ pkgs, ... }:
 {
   dconf.settings = {
     "org/gnome/shell".favorite-apps = [
@@ -10,8 +10,8 @@
       "obsidian.desktop"
       "ru.max.MAX.desktop"
       "org.telegram.desktop.desktop"
-    ] 
-  "org/gnome/shell".enabled-extensions = [
+    ];
+    "org/gnome/shell".enabled-extensions = [
       pkgs.gnomeExtensions.dash-to-dock.extensionUuid
     ];
     "org/gnome/shell/extensions/dash-to-dock" = {
