@@ -1,13 +1,13 @@
 # Home Manager во всех профилях
 
 Home Manager release-26.05 подключён как модуль NixOS; nixpkgs следует системному input.
-Профили vm, zet, nuc, 02i0132 и dell используют home/default.nix для nikolaev.
+Профили vm, zet, nuc, 02i0132 и dell используют home/nikolaev.nix для nikolaev.
 
 ## Где редактировать
 
 - home/gnome.nix: пользовательские dconf-настройки GNOME, Dock, темы, раскладки, горячие клавиши.
 - home/hosts/<профиль>.nix: пользовательские приложения (home.packages).
-- home/hosts/<профиль>-ghostty.conf: настройки Ghostty.
+- home/nikolaev.nix: общие настройки Ghostty внутри профиля nikolaev (ghosttyConfig).
 - hosts/<профиль>: диски, драйверы, службы, виртуализация, автологин.
 - modules/common.nix: сеть, firewall, SSH, звук, очистка и nix-update.
 

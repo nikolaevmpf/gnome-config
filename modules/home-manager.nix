@@ -11,6 +11,6 @@ in
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.backupCommand = "${backup}";
-  home-manager.users.nikolaev = import ../home/default.nix;
+  home-manager.users.nikolaev = import ../home/nikolaev.nix;
   fonts.packages = [ pkgs.jetbrains-mono ];
 }
