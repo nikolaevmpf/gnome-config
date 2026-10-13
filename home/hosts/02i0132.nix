@@ -19,7 +19,7 @@ let
   '';
 in
 {
-  imports = [ ./02i0132-gnome.nix ./02i0132-dock.nix ];
+  imports = [ ./02i0132-gnome.nix ./02i0132-dock.nix ./02i0132-monitoring.nix ];
   home.packages = with pkgs; [ libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;
