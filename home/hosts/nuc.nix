@@ -19,7 +19,7 @@ let
   '';
 in
 {
-  imports = [ ./nuc-gnome.nix ./nuc-dock.nix ];
+  imports = [ ./nuc-gnome.nix ./nuc-dock.nix ./nuc-monitoring.nix ];
   home.packages = with pkgs; [ libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;

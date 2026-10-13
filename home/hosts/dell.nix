@@ -19,7 +19,7 @@ let
   '';
 in
 {
-  imports = [ ./dell-gnome.nix ./dell-dock.nix ];
+  imports = [ ./dell-gnome.nix ./dell-dock.nix ./dell-monitoring.nix ];
   home.packages = with pkgs; [ libreoffice transmission_4-gtk ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;

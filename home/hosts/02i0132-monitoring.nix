@@ -1,8 +1,7 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs.gnomeExtensions; [ astra-monitor vitals ];
+  home.packages = [ pkgs.gnomeExtensions.astra-monitor ];
   dconf.settings."org/gnome/shell".enabled-extensions = [
     pkgs.gnomeExtensions.astra-monitor.extensionUuid
-    pkgs.gnomeExtensions.vitals.extensionUuid
   ];
 }

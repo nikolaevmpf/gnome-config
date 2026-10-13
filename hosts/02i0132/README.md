@@ -133,8 +133,8 @@ sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 
 ## Мониторинг в верхней панели
 
-На 02i0132 включены Astra Monitor и Vitals вместе с Dash to Dock.
+На 02i0132 включены Astra Monitor вместе с Dash to Dock.
 Пакеты и включение расширений находятся в `home/hosts/02i0132-monitoring.nix`.
 Применение: `nix-update`, затем выйти из GNOME и войти снова.
 Настройки показателей открываются через приложение «Расширения» для каждого расширения.
-Оба включены для сравнения; показатели могут дублироваться.
+Vitals удалён из конфигурации.

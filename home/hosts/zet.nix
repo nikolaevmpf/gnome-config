@@ -19,7 +19,7 @@ let
   '';
 in
 {
-  imports = [ ./zet-gnome.nix ./zet-dock.nix ];
+  imports = [ ./zet-gnome.nix ./zet-dock.nix ./zet-monitoring.nix ];
   home.packages = with pkgs; [ transmission_4-gtk boxflat ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;
