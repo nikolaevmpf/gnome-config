@@ -20,7 +20,7 @@ let
 in
 {
   imports = [ ./dell-gnome.nix ./dell-dock.nix ./dell-monitoring.nix ];
-  home.packages = with pkgs; [ libreoffice transmission_4-gtk ];
+  home.packages = with pkgs; [ lazyssh libreoffice transmission_4-gtk ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;
   xdg.configFile."ghostty/config.ghostty".text = ghosttyConfig;
