@@ -20,7 +20,7 @@ let
 in
 {
   imports = [ ./nuc-gnome.nix ./nuc-dock.nix ./nuc-monitoring.nix ];
-  home.packages = with pkgs; [ lazyssh libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk ];
+  home.packages = with pkgs; [ celluloid lazyssh libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;
   xdg.configFile."ghostty/config.ghostty".text = ghosttyConfig;
