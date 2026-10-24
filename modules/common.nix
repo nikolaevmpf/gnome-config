@@ -83,8 +83,37 @@
         flock -n 9 || { echo "Обновление уже запущено." >&2; exit 1; }
         cd "$repo"
         
+        if [[ "$(git branch --show-current)" != main ]]; then
+          echo "Переключись на ветку main перед обновлением." >&2
+          exit 1
+        fi
+        if [[ -d "$(git rev-parse --git-path rebase-merge)" ]] ||
+           [[ -d "$(git rev-parse --git-path rebase-apply)" ]] ||
+           [[ -f "$(git rev-parse --git-path MERGE_HEAD)" ]]; then
+          echo "Сначала заверши или отмени текущий rebase/merge. Проверь git status." >&2
+          exit 1
+        fi
+        if ! git diff --quiet || ! git diff --cached --quiet; then
+          echo "Есть незакоммиченные изменения. Проверь git status и сохрани правки коммитом перед обновлением." >&2
+          exit 1
+        fi
         echo "Получаю изменения из GitHub…"
-        git pull --ff-only
+        git fetch origin
+        if ! git merge-base --is-ancestor origin/main HEAD; then
+          if git merge-base --is-ancestor HEAD origin/main; then
+            git merge --ff-only origin/main
+          else
+            backup="backup/nix-update-$(date +%Y%m%d-%H%M%S)-$(git rev-parse --short HEAD)"
+            git branch "$backup"
+            echo "Локальные коммиты сохранены в $backup. Переношу их поверх origin/main…"
+            if ! git rebase origin/main; then
+              echo "Конфликт: сборка не запущена. Выполни git status." >&2
+              echo "После исправления: git add <файлы> и git rebase --continue." >&2
+              echo "Для отмены: git rebase --abort. Исходные коммиты сохранены в $backup." >&2
+              exit 1
+            fi
+          fi
+        fi
         
         if "$upgrade"; then
           echo "Обновляю версии пакетов в flake.lock…"
