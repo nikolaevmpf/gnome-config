@@ -1,8 +1,11 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, opencode-v2, ... }:
 {
   imports = [ ./nvidia.nix ./virtualisation.nix ];
 
   networking.hostName = "02i0132";
+
+  # OpenCode 2.1.4 pinned to its upstream release commit; only on 02i0132.
+  home-manager.users.nikolaev.home.packages = [ opencode-v2.packages.x86_64-linux.default ];
 
   programs.amnezia-vpn.enable = true;
 
