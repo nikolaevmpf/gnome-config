@@ -1,7 +1,10 @@
-{ ... }:
+{ opencode-v2, ... }:
 {
   imports = [ ./hardware.nix ./apps.nix ];
   networking.hostName = "nuc";
+
+  # OpenCode 2.1.4 from the same pinned upstream input as 02i0132.
+  home-manager.users.nikolaev.home.packages = [ opencode-v2.packages.x86_64-linux.default ];
 
   services.displayManager.autoLogin = {
     enable = true;

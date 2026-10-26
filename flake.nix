@@ -48,6 +48,7 @@
 
     nixosConfigurations.nuc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = { inherit opencode-v2; };
       modules = [
         home-manager.nixosModules.home-manager
         ./modules/home-manager.nix

@@ -155,3 +155,10 @@ git rebase origin/main
 # Только после успешного rebase:
 nix-update
 ```
+
+## OpenCode 2
+
+На `nuc` и `02i0132` подключён OpenCode 2.1.4 из отдельного upstream input `opencode-v2` в `flake.nix`.
+Версия закреплена коммитом, независимо от системного nixpkgs. Остальные профили OpenCode не устанавливают.
+Применение: `nix-update`. Запуск: `opencode` (также доступно `opencode2`). Проверка: `opencode --version`.
+Сборка может потребовать загрузки зависимостей и времени на компиляцию. При изменении input `nix flake lock` обновляет локальный lock; полное `--upgrade` не требуется.
