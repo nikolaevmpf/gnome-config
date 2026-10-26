@@ -20,7 +20,7 @@ let
 in
 {
   imports = [ ./02i0132-gnome.nix ./02i0132-dock.nix ./02i0132-monitoring.nix ];
-  home.packages = with pkgs; [ celluloid lazyssh libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk ];
+  home.packages = with pkgs; [ celluloid lazyssh libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk opencode ];
   # Настройки терминала только для этого хоста.
   xdg.configFile."ghostty/config".text = ghosttyConfig;
   xdg.configFile."ghostty/config.ghostty".text = ghosttyConfig;
