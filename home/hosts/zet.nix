@@ -13,6 +13,8 @@ let
     cursor-style-blink = false
     mouse-hide-while-typing = true
     scrollback-limit = 33554432
+    # Переключение захвата мыши терминальными приложениями.
+    keybind = ctrl+shift+m=toggle_mouse_reporting
     confirm-close-surface = true
     window-width = 170
     window-height = 45
