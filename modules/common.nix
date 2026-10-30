@@ -49,7 +49,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    git vim wget curl pciutils usbutils nmap mc ncdu
+    git vim wget curl pciutils usbutils nmap mc gdu btop
     (pkgs.writeShellApplication {
       name = "nix-update";
       runtimeInputs = [ pkgs.git pkgs.nix pkgs.util-linux ];
