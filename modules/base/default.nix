@@ -18,6 +18,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    gh
     vim
     wget
     curl
