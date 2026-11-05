@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm" ];
+
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
@@ -9,8 +10,10 @@
       vhostUserPackages = [ pkgs.virtiofsd ];
     };
   };
+
   programs.virt-manager.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
+
   users.users.nikolaev.extraGroups = [ "libvirtd" "kvm" ];
   environment.systemPackages = [ pkgs.qemu_kvm pkgs.virt-viewer ];
 }

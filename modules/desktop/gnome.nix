@@ -1,10 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
   programs.dconf.enable = true;
 
-  # Applications using the default-terminal specification launch Ghostty.
   xdg.terminal-exec = {
     enable = true;
     settings = {
@@ -13,18 +12,16 @@
     };
   };
 
-  # Add "Open in Ghostty" to the Files context menu.
   programs.nautilus-open-any-terminal = {
     enable = true;
     terminal = "ghostty";
   };
+
   services.xserver.xkb.layout = "us,ru";
 
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
-  # Keep the GNOME shell, settings, files and terminal while trimming
-  # optional applications. attrByPath tolerates package renames.
   environment.gnome.excludePackages =
     builtins.filter (package: package != null)
       (map (name: lib.attrByPath [ name ] null pkgs) [

@@ -4,9 +4,7 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-  boot.initrd.availableKernelModules = [
-    "xhci_pci" "nvme" "ahci" "usb_storage" "sd_mod"
-  ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "ahci" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "i915" "amdgpu" ];
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;

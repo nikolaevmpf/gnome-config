@@ -1,29 +1,26 @@
 { pkgs, ... }:
-let
-  ghosttyConfig = ''
-    font-family = JetBrains Mono
-    font-size = 12
-    background = #000000
-    foreground = #e6e6e6
-    background-opacity = 1
-    window-theme = dark
-    window-padding-x = 10
-    window-padding-y = 8
-    cursor-style = block
-    cursor-style-blink = false
-    mouse-hide-while-typing = true
-    scrollback-limit = 33554432
-    # Переключение захвата мыши терминальными приложениями.
-    keybind = ctrl+shift+m=toggle_mouse_reporting
-    confirm-close-surface = true
-    window-width = 170
-    window-height = 45
-  '';
-in
 {
-  imports = [ ./02i0132-gnome.nix ./02i0132-dock.nix ./02i0132-monitoring.nix ];
-  home.packages = with pkgs; [ celluloid lazyssh libreoffice telegram-desktop obsidian pinta remmina zed-editor transmission_4-gtk ];
-  # Настройки терминала только для этого хоста.
-  xdg.configFile."ghostty/config".text = ghosttyConfig;
-  xdg.configFile."ghostty/config.ghostty".text = ghosttyConfig;
+  imports = [ ../common/monitoring.nix ];
+
+  home.packages = with pkgs; [
+    celluloid
+    lazyssh
+    libreoffice
+    telegram-desktop
+    obsidian
+    pinta
+    remmina
+    zed-editor
+    transmission_4-gtk
+  ];
+
+  dconf.settings."org/gnome/shell".favorite-apps = [
+    "firefox.desktop"
+    "com.mitchellh.ghostty.desktop"
+    "org.gnome.Nautilus.desktop"
+    "steam.desktop"
+    "obsidian.desktop"
+    "ru.max.MAX.desktop"
+    "org.telegram.desktop.desktop"
+  ];
 }

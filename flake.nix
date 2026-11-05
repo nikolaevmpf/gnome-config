@@ -1,75 +1,60 @@
 {
-  description = "NixOS GNOME configurations for VM and physical machines";
+  description = "NixOS GNOME configurations for VM, work, browsing and gaming hosts";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-  inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.opencode-v2.url = "github:anomalyco/opencode/2a3e7c0f349ba0e9454fa0529ec041cf57e53cb8";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-  inputs.home-manager = {
-    url = "github:nix-community/home-manager/release-26.05";
-    inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    opencode-v2.url = "github:anomalyco/opencode/2a3e7c0f349ba0e9454fa0529ec041cf57e53cb8";
   };
 
-  outputs = { nixpkgs, home-manager, opencode-v2, nixpkgs-unstable, ... }: {
-    nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
+    let
       system = "x86_64-linux";
-      modules = [
-        home-manager.nixosModules.home-manager
-        ./modules/home-manager.nix
-        ./modules/common.nix
-        ./modules/gnome.nix
-        ./hosts/vm/default.nix
-      ];
-    };
 
-    nixosConfigurations.zet = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        home-manager.nixosModules.home-manager
-        ./modules/home-manager.nix
-        ./modules/common.nix
-        ./modules/gnome.nix
-        ./modules/gaming.nix
-        ./hosts/zet/default.nix
-      ];
-    };
+      mkHost = name: extraModules:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            home-manager.nixosModules.home-manager
+            ./modules/base
+            ./modules/desktop
+            ./modules/home
+            ./hosts/${name}
+          ] ++ extraModules;
+        };
+    in
+    {
+      nixosConfigurations = {
+        vm = mkHost "vm" [
+          ./modules/roles/virtualization.nix
+        ];
 
-    nixosConfigurations."02i0132" = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit opencode-v2 nixpkgs-unstable; };
-      modules = [
-        home-manager.nixosModules.home-manager
-        ./modules/home-manager.nix
-        ./modules/common.nix
-        ./modules/gnome.nix
-        ./modules/gaming.nix
-        ./hosts/02i0132/default.nix
-      ];
-    };
+        nuc = mkHost "nuc" [
+          ./modules/roles/work.nix
+          ./modules/roles/browsing.nix
+        ];
 
-    nixosConfigurations.nuc = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit opencode-v2 nixpkgs-unstable; };
-      modules = [
-        home-manager.nixosModules.home-manager
-        ./modules/home-manager.nix
-        ./modules/common.nix
-        ./modules/gnome.nix
-        ./modules/gaming.nix
-        ./hosts/nuc/default.nix
-      ];
-    };
+        "02i0132" = mkHost "02i0132" [
+          ./modules/roles/work.nix
+          ./modules/roles/browsing.nix
+          ./modules/roles/gaming.nix
+        ];
 
-    nixosConfigurations.dell = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        home-manager.nixosModules.home-manager
-        ./modules/home-manager.nix
-        ./modules/common.nix
-        ./modules/gnome.nix
-        ./modules/gaming.nix
-        ./hosts/dell/default.nix
-      ];
+        zet = mkHost "zet" [
+          ./modules/roles/browsing.nix
+          ./modules/roles/gaming.nix
+        ];
+
+        dell = mkHost "dell" [
+          ./modules/roles/work.nix
+          ./modules/roles/browsing.nix
+        ];
+      };
     };
-  };
 }

@@ -1,17 +1,21 @@
-{ config, ... }:
+{ lib, config, ... }:
 {
-  # GeForce RTX 4060 Ti (AD106, Ada Lovelace), only display GPU.
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
+  boot.initrd.availableKernelModules = [
+    "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sr_mod"
+    "virtio_pci" "virtio_scsi" "virtio_blk"
+  ];
+
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     modesetting.enable = true;
-    # Preserve VRAM and use NVIDIA's systemd suspend/resume hooks.
     powerManagement.enable = true;
     powerManagement.kernelSuspendNotifier = false;
     open = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  # Store the VRAM snapshot on disk rather than in a potentially small tmpfs.
   boot.extraModprobeConfig = ''
     options nvidia NVreg_TemporaryFilePath=/var/tmp
   '';

@@ -1,53 +1,22 @@
-{ opencode-v2, ... }:
+{ inputs, ... }:
 {
-  imports = [ ./hardware.nix ./apps.nix ];
-  networking.hostName = "nuc";
+  imports = [
+    ./hardware.nix
+    ./disks.nix
+    ./mounts.nix
+  ];
 
-  # OpenCode 2.1.4 from the same pinned upstream input as 02i0132.
-  home-manager.users.nikolaev.home.packages = [ opencode-v2.packages.x86_64-linux.default ];
+  networking.hostName = "nuc";
 
   services.displayManager.autoLogin = {
     enable = true;
     user = "nikolaev";
   };
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
-  boot.loader.efi.canTouchEfiVariables = true;
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/fc64e8f1-e978-4846-87c6-18308d6a81ce";
-    fsType = "btrfs";
-    options = [ "subvol=@root" "compress=zstd" "noatime" ];
-  };
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/fc64e8f1-e978-4846-87c6-18308d6a81ce";
-    fsType = "btrfs";
-    options = [ "subvol=@home" "compress=zstd" ];
-  };
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/fc64e8f1-e978-4846-87c6-18308d6a81ce";
-    fsType = "btrfs";
-    options = [ "subvol=@nix" "compress=zstd" "noatime" ];
-  };
-  fileSystems."/var/log" = {
-    device = "/dev/disk/by-uuid/fc64e8f1-e978-4846-87c6-18308d6a81ce";
-    fsType = "btrfs";
-    options = [ "subvol=@log" "compress=zstd" ];
-  };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/2AE2-E8A4";
-    fsType = "vfat";
-    options = [ "umask=0077" ];
-  };
+  home-manager.users.nikolaev.home.packages = [
+    inputs.opencode-v2.packages.x86_64-linux.default
+  ];
 
-  # Добавляем монтирование внешнего диска с UUID 0ae52be7-d75e-4044-8367-a8687251a8cb в каталог /mnt/Data. Опции монтирования включают noatime (не обновлять время доступа), nofail (не выдавать ошибку при отсутствии устройства), x-systemd.automount (автоматическое монтирование при доступе) и x-systemd.device-timeout=5s (таймаут ожидания устройства 5 секунд).
-  fileSystems."/mnt/Data" = {
-    device = "/dev/disk/by-uuid/0ae52be7-d75e-4044-8367-a8687251a8cb";
-    fsType = "ext4";
-    options = [ "noatime" "nofail" "x-systemd.automount" "x-systemd.device-timeout=5s" ];
-  };
-
-  # Статические записи для локальной сети.
   networking.hosts = {
     "192.168.1.59" = [ "zet" ];
     "192.168.1.149" = [ "nuc" ];
