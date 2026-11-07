@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware.nix
+    ./gosplugin.nix
     ./disks.nix
     ./mounts.nix
   ];

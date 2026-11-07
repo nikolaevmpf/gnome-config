@@ -80,3 +80,22 @@ virsh -c qemu:///system list --all
 ## Home Manager
 
 Пользовательские приложения и GNOME перенесены в `home/`; GNOME — в `home/hosts/nuc-gnome.nix`, Dock — в `home/hosts/nuc-dock.nix`, приложения и Ghostty — в `home/hosts/nuc.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).
+
+## Госплагин для Firefox
+
+Локальный компонент 1.3.19.0 извлекается из официального Linux-установщика
+https://gu-st.ru/content/Gosplugin/Gosplugin_Linux-Debian_Installer.deb.sh
+без запуска его Debian-установки. Контрольная сумма зафиксирована.
+Пакет запускается в FHS-окружении для штатных путей /opt и комплектных библиотек.
+Исходник пакета: packages/gosplugin.nix; подключение только на nuc: hosts/nuc/gosplugin.nix.
+
+Firefox-расширение «Госплагин» устанавливается пользователем отдельно.
+Home Manager регистрирует native messaging host firefox.gosuslugi.plugin для nikolaev.
+Включена служба pcscd для смарт-карт; криптопровайдер и драйвер конкретного токена могут потребоваться отдельно.
+
+Применение: nix-update, затем полностью перезапустить Firefox.
+Проверка регистрации: cat ~/.mozilla/native-messaging-hosts/firefox.gosuslugi.plugin.json
+Далее проверить обнаружение локального приложения через расширение на Госуслугах.
+Не запускайте gosplugin через sudo. Не удаляйте сертификаты и контейнеры ключей.
+NixOS не входит в опубликованный список поддерживаемых ОС; это адаптация официального бинарного пакета.
+Полная сборка и реальное подписание требуют проверки на nuc.
