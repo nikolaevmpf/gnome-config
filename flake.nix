@@ -10,6 +10,8 @@
     };
 
     opencode-v2.url = "github:anomalyco/opencode/2a3e7c0f349ba0e9454fa0529ec041cf57e53cb8";
+
+    kimi-code.url = "github:MoonshotAI/kimi-code";
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:
