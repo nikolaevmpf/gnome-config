@@ -80,7 +80,7 @@ sudo nixos-rebuild boot --flake .#<profile>
 
 ## Проверки
 
-GitHub Actions проверяет lock-файл, форматирование, statix, deadnix и оценку всех пяти профилей. Локально:
+Проверка lock-файла, форматирования, statix, deadnix и оценки всех пяти профилей выполняется локально:
 
 ```bash
 nix flake check
