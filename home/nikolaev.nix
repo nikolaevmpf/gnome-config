@@ -7,6 +7,7 @@ in
     ./common/gnome.nix
     ./common/dock.nix
     ./common/ghostty.nix
+    ./common/zed.nix
     ./hosts/${host}.nix
   ];
 
