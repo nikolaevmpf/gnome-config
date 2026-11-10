@@ -2,7 +2,7 @@
 {
   users.users.nikolaev = {
     isNormalUser = true;
-    description = "NixOS administrator";
+    description = "Nikolaev Alexander";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
   };
 }
