@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
-  imports = [ ../common/monitoring.nix ];
+  imports = [
+    ../common/monitoring.nix
+    ../common/zed.nix
+  ];
 
   home.packages = with pkgs; [
     celluloid

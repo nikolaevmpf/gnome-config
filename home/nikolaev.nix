@@ -7,13 +7,14 @@ in
     ./common/gnome.nix
     ./common/dock.nix
     ./common/ghostty.nix
-    ./common/zed.nix
     ./hosts/${host}.nix
   ];
 
-  home.username = "nikolaev";
-  home.homeDirectory = "/home/nikolaev";
-  home.stateVersion = "26.05";
+  home = {
+    username = "nikolaev";
+    homeDirectory = "/home/nikolaev";
+    stateVersion = "26.05";
+  };
 
   xdg.enable = true;
   programs.home-manager.enable = true;

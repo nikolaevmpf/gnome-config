@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+_: {
   imports = [
     ./hardware.nix
     ./disks.nix
@@ -12,12 +11,6 @@
     enable = true;
     user = "nikolaev";
   };
-
-  home-manager.users.nikolaev.home.packages = [
-    # Kimi Code CLI — terminal AI agent (official flake, self-contained binary).
-    # Login: run `kimi`, then /login (Kimi Code OAuth или Moonshot API key).
-    inputs.kimi-code.packages.x86_64-linux.default
-  ];
 
   networking.hosts = {
     "192.168.1.59" = [ "zet" ];

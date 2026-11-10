@@ -1,12 +1,23 @@
 { config, pkgs, ... }:
+let
+  profile = if config.networking.hostName == "nixos" then "vm" else config.networking.hostName;
+in
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = [
     (pkgs.writeShellApplication {
       name = "nix-update";
-      runtimeInputs = [ pkgs.git pkgs.nix pkgs.util-linux ];
+      runtimeInputs = with pkgs; [
+        coreutils
+        git
+        nix
+        util-linux
+      ];
       text = ''
         if [[ "$EUID" -eq 0 ]]; then
           echo "Запускай nix-update от обычного пользователя, без sudo." >&2
@@ -19,6 +30,7 @@
           --upgrade) upgrade=true ;;
           --help|-h)
             echo "nix-update [--upgrade]: GitHub → сборка → применение."
+            echo "--upgrade дополнительно обновляет входы в flake.lock."
             exit 0
             ;;
           *) echo "Использование: nix-update [--upgrade]" >&2; exit 1 ;;
@@ -47,26 +59,22 @@
           echo "Сначала заверши или отмени текущий rebase/merge. Проверь git status." >&2
           exit 1
         fi
-        if ! git diff --quiet || ! git diff --cached --quiet; then
-          echo "Есть незакоммиченные изменения. Проверь git status и сохрани правки коммитом перед обновлением." >&2
+        if [[ -n "$(git status --porcelain --untracked-files=normal)" ]]; then
+          echo "Есть незакоммиченные или неотслеживаемые файлы. Проверь git status." >&2
+          echo "Сохрани или удали их перед обновлением." >&2
           exit 1
         fi
+
         echo "Получаю изменения из GitHub…"
-        git fetch origin
-        if ! git merge-base --is-ancestor origin/main HEAD; then
-          if git merge-base --is-ancestor HEAD origin/main; then
-            git merge --ff-only origin/main
-          else
-            backup="backup/nix-update-$(date +%Y%m%d-%H%M%S)-$(git rev-parse --short HEAD)"
-            git branch "$backup"
-            echo "Локальные коммиты сохранены в $backup. Переношу их поверх origin/main…"
-            if ! git rebase origin/main; then
-              echo "Конфликт: сборка не запущена. Выполни git status." >&2
-              echo "После исправления: git add <файлы> и git rebase --continue." >&2
-              echo "Для отмены: git rebase --abort. Исходные коммиты сохранены в $backup." >&2
-              exit 1
-            fi
-          fi
+        git fetch origin main
+        if git merge-base --is-ancestor origin/main HEAD; then
+          :
+        elif git merge-base --is-ancestor HEAD origin/main; then
+          git merge --ff-only origin/main
+        else
+          echo "Локальная main и origin/main разошлись. Автоматический rebase отменён." >&2
+          echo "Проверь изменения и выполни git rebase origin/main вручную, затем повтори обновление." >&2
+          exit 1
         fi
 
         if "$upgrade"; then
@@ -77,10 +85,16 @@
         # Создать недостающий lock от пользователя, сохранив существующие версии.
         nix flake lock "path:$repo"
 
-        echo "Применяю профиль ${if config.networking.hostName == "nixos" then "vm" else config.networking.hostName}…"
-        /run/wrappers/bin/sudo /run/current-system/sw/bin/nixos-rebuild switch --flake "path:$repo#${if config.networking.hostName == "nixos" then "vm" else config.networking.hostName}"
+        echo "Применяю профиль ${profile}…"
+        /run/wrappers/bin/sudo /run/current-system/sw/bin/nixos-rebuild switch --flake "path:$repo#${profile}"
         echo "Обновление завершено."
 
+        if ! git diff --quiet -- flake.lock; then
+          echo
+          echo "flake.lock изменён. Проверь diff и опубликуй его, чтобы версии совпадали на всех машинах:"
+          echo "  git diff -- flake.lock"
+          echo "  git add flake.lock && git commit -m 'Обновить flake.lock' && git push origin main"
+        fi
       '';
     })
   ];

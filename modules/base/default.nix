@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./nix.nix
+    ./maintenance.nix
     ./network.nix
     ./audio.nix
     ./cleanup.nix

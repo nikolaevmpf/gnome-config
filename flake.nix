@@ -9,14 +9,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Сохраняем собственный nixpkgs: Kimi Code требует новые Node.js
+    # и fetchPnpmDeps из nixos-unstable.
     kimi-code.url = "github:MoonshotAI/kimi-code";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  outputs =
+    inputs@{ nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
 
-      mkHost = name: extraModules:
+      mkHost =
+        name: extraModules:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs; };
@@ -26,7 +30,8 @@
             ./modules/desktop
             ./modules/home
             ./hosts/${name}
-          ] ++ extraModules;
+          ]
+          ++ extraModules;
         };
     in
     {
@@ -38,12 +43,17 @@
         nuc = mkHost "nuc" [
           ./modules/roles/work.nix
           ./modules/roles/browsing.nix
+          ./modules/roles/virtualization.nix
+          ./modules/roles/development.nix
+          ./modules/roles/max.nix
         ];
 
         "02i0132" = mkHost "02i0132" [
           ./modules/roles/work.nix
           ./modules/roles/browsing.nix
           ./modules/roles/gaming.nix
+          ./modules/roles/development.nix
+          ./modules/roles/max.nix
         ];
 
         zet = mkHost "zet" [
@@ -54,6 +64,7 @@
         dell = mkHost "dell" [
           ./modules/roles/work.nix
           ./modules/roles/browsing.nix
+          ./modules/roles/virtualization.nix
         ];
       };
     };

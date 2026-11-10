@@ -21,7 +21,41 @@
         "type": "github"
       }
     },
+    "kimi-code": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1794320655,
+        "narHash": "sha256-no5TLvGtFDAO8ZXOciuqa7KNV+So7zu9sSpMnxaxaw8=",
+        "owner": "MoonshotAI",
+        "repo": "kimi-code",
+        "rev": "7490d07d358d1f6736cf87abf7a7ae22d6ea8897",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MoonshotAI",
+        "repo": "kimi-code",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1794042290,
+        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1793633738,
         "narHash": "sha256-tItrb9M8eYA6WhFgmT9tpGKueri3+wRuVA952o/2xSU=",
@@ -37,46 +71,11 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1790510107,
-        "narHash": "sha256-EVMNYv7hYDDD9TGVT/hIyTYgpiXA8y3m5xIEIxuGNU0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "3181085bfd08663b6b9e60bc7a8395c2aaa741bd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "opencode-v2": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1792750501,
-        "narHash": "sha256-njv+CDh5JJtrMaicam9Zmi5yIIiba68h1/FkLKUm2cE=",
-        "owner": "anomalyco",
-        "repo": "opencode",
-        "rev": "2a3e7c0f349ba0e9454fa0529ec041cf57e53cb8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "anomalyco",
-        "repo": "opencode",
-        "rev": "2a3e7c0f349ba0e9454fa0529ec041cf57e53cb8",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs",
-        "opencode-v2": "opencode-v2"
+        "kimi-code": "kimi-code",
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },

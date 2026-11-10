@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
-  imports = [ ../common/monitoring.nix ];
+  imports = [
+    ../common/monitoring.nix
+    ../common/zed.nix
+  ];
 
   home.packages = with pkgs; [
     celluloid
@@ -10,7 +13,6 @@
     obsidian
     pinta
     remmina
-    zed-editor
     transmission_4-gtk
   ];
 

@@ -1,4 +1,4 @@
-{ ... }:
+_:
 let
   ghosttyConfig = ''
     font-family = JetBrains Mono
@@ -21,5 +21,4 @@ let
 in
 {
   xdg.configFile."ghostty/config".text = ghosttyConfig;
-  xdg.configFile."ghostty/config.ghostty".text = ghosttyConfig;
 }
