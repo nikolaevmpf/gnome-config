@@ -14,7 +14,6 @@
   };
 
   home-manager.users.nikolaev.home.packages = [
-    inputs.opencode-v2.packages.x86_64-linux.default
     # Kimi Code CLI — terminal AI agent (official flake, self-contained binary).
     # Login: run `kimi`, then /login (Kimi Code OAuth или Moonshot API key).
     inputs.kimi-code.packages.x86_64-linux.default
