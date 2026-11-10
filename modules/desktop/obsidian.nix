@@ -1,18 +1,20 @@
-{ ... }:
-{
+{ pkgs, ... }:
+let
   # obsidian.md недоступен из сети nuc (timeout при скачивании иконки).
-  # Заменяем URL иконки на web.archive.org; содержимое идентично,
+  # Тот же файл с web.archive.org; содержимое идентично,
   # поэтому hash (фиксированный выход fetchurl) сохраняем прежним.
+  icon = pkgs.fetchurl {
+    url = "https://web.archive.org/web/2024id_/https://obsidian.md/images/obsidian-logo-gradient.svg";
+    hash = "sha256-EZsBuWyZ9zYJh0LDKfRAMTtnY70q6iLK/ggXlplDEoA=";
+  };
+in
+{
   nixpkgs.overlays = [
     (final: prev: {
       obsidian = prev.obsidian.overrideAttrs (old: {
-        icon = prev.fetchurl {
-          url = "https://web.archive.org/web/2024id_/https://obsidian.md/images/obsidian-logo-gradient.svg";
-          hash = "sha256-EZsBuWyZ9zYJh0LDKfRAMTtnY70q6iLK/ggXlplDEoA=";
-        };
-        # installPhase уже интерполирован с исходным icon на этапе
-        # определения пакета, поэтому переписываем его целиком
-        # (копия из nixpkgs с заменой ${icon} на переопределённый).
+        # installPhase в nixpkgs уже интерполирован с исходным icon
+        # на этапе определения пакета, поэтому переписываем его
+        # целиком (копия из nixpkgs с заменой иконки).
         installPhase = ''
           runHook preInstall
           mkdir -p $out/bin
@@ -35,15 +37,9 @@
             -t $out/share/applications/
           for size in 16 24 32 48 64 128 256 512; do
             mkdir -p $out/share/icons/hicolor/"$size"x"$size"/apps
-            magick -background none $out/share/icons/obsidian-src.svg -resize "$size"x"$size" $out/share/icons/hicolor/"$size"x"$size"/apps/obsidian.png
+            magick -background none ${icon} -resize "$size"x"$size" $out/share/icons/hicolor/"$size"x"$size"/apps/obsidian.png
           done
           runHook postInstall
-        '';
-
-        postInstall = ''
-          runHook prePostInstall
-          cp ${final.obsidian.icon} $out/share/icons/obsidian-src.svg
-          runHook postPostInstall
         '';
       });
     })
