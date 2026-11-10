@@ -14,6 +14,12 @@
   programs.virt-manager.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
-  users.users.nikolaev.extraGroups = [ "libvirtd" "kvm" ];
-  environment.systemPackages = [ pkgs.qemu_kvm pkgs.virt-viewer ];
+  users.users.nikolaev.extraGroups = [
+    "libvirtd"
+    "kvm"
+  ];
+  environment.systemPackages = [
+    pkgs.qemu_kvm
+    pkgs.virt-viewer
+  ];
 }

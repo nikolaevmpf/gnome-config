@@ -1,7 +1,10 @@
 { lib, pkgs, ... }:
 {
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  services = {
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+    xserver.xkb.layout = "us,ru";
+  };
   programs.dconf.enable = true;
 
   xdg.terminal-exec = {
@@ -17,31 +20,31 @@
     terminal = "ghostty";
   };
 
-  services.xserver.xkb.layout = "us,ru";
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
-
-  environment.gnome.excludePackages =
-    builtins.filter (package: package != null)
-      (map (name: lib.attrByPath [ name ] null pkgs) [
-        "gnome-console"
-        "gnome-weather"
-        "gnome-calendar"
-        "gnome-maps"
-        "gnome-contacts"
-        "gnome-clocks"
-        "gnome-tour"
-        "gnome-characters"
-        "gnome-connections"
-        "gnome-music"
-        "gnome-photos"
-        "gnome-logs"
-        "gnome-remote-desktop"
-        "yelp"
-        "epiphany"
-        "simple-scan"
-        "showtime"
-        "totem"
-      ]);
+  environment.gnome.excludePackages = builtins.filter (package: package != null) (
+    map (name: lib.attrByPath [ name ] null pkgs) [
+      "gnome-console"
+      "gnome-weather"
+      "gnome-calendar"
+      "gnome-maps"
+      "gnome-contacts"
+      "gnome-clocks"
+      "gnome-tour"
+      "gnome-characters"
+      "gnome-connections"
+      "gnome-music"
+      "gnome-photos"
+      "gnome-logs"
+      "gnome-remote-desktop"
+      "yelp"
+      "epiphany"
+      "simple-scan"
+      "showtime"
+      "totem"
+    ]
+  );
 }

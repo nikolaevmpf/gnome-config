@@ -12,8 +12,14 @@
     };
 
     "org/gnome/desktop/input-sources".sources = [
-      (lib.gvariant.mkTuple [ "xkb" "us" ])
-      (lib.gvariant.mkTuple [ "xkb" "ru" ])
+      (lib.gvariant.mkTuple [
+        "xkb"
+        "us"
+      ])
+      (lib.gvariant.mkTuple [
+        "xkb"
+        "ru"
+      ])
     ];
 
     "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [

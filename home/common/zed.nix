@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   # Zed с интеграцией Kimi Code CLI через ACP (Agent Client Protocol).
   # Zed запускает `kimi acp` как подпроцесс; аутентификация переиспользуется
   # из CLI (нужен один раз выполнить `kimi` → /login).

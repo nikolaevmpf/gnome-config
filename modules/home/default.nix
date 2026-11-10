@@ -8,8 +8,10 @@ let
   '';
 in
 {
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.backupCommand = "${backup}";
-  home-manager.users.nikolaev = import ../../home/nikolaev.nix;
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupCommand = "${backup}";
+    users.nikolaev = import ../../home/nikolaev.nix;
+  };
 }

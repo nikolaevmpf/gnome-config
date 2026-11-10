@@ -1,8 +1,12 @@
-{ pkgs, ... }:
-{
+_: {
   users.users.nikolaev = {
     isNormalUser = true;
     description = "Nikolaev Alexander";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+      "audio"
+    ];
   };
 }
