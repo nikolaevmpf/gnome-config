@@ -1,36 +1,33 @@
 # Home Manager
 
-Home Manager подключён как модуль NixOS и используется для пользователя `nikolaev`.
+Home Manager подключён как модуль NixOS и управляет конфигурацией пользователя `nikolaev`. Пакеты используют системный `nixpkgs`, поэтому версии и разрешение unfree совпадают с NixOS.
 
 ## Структура
 
-- `home/nikolaev.nix` — базовая home-конфигурация и выбор профиля по hostname.
-- `home/common/gnome.nix` — общие настройки GNOME.
-- `home/common/dock.nix` — общие настройки Dash to Dock.
-- `home/common/ghostty.nix` — общий конфиг Ghostty.
+- `home/nikolaev.nix` — общая конфигурация и выбор файла хоста по hostname.
+- `home/common/gnome.nix` — тема, раскладки, фон, клавиша запуска Ghostty и Firefox.
+- `home/common/dock.nix` — Dash to Dock.
+- `home/common/ghostty.nix` — `~/.config/ghostty/config`.
 - `home/common/monitoring.nix` — Astra Monitor.
-- `home/hosts/<host>.nix` — отличия конкретного хоста.
+- `home/common/zed.nix` — Zed и ACP-интеграция с Kimi Code CLI.
+- `home/hosts/<host>.nix` — пакеты, избранные приложения и необязательные общие модули.
 
-## Логика
+Hostname `nixos` соответствует Home Manager-профилю `vm`. Zed подключается только на `nuc` и `02i0132`; системная роль `development` одновременно устанавливает `kimi`, необходимый для `kimi acp`.
 
-Общие настройки вынесены в `home/common/`, чтобы не дублировать одинаковые блоки между машинами.
-В `home/hosts/` остаются только:
-- набор пользовательских пакетов,
-- favorite-apps,
-- импорт monitoring-настроек, если нужен.
+Для первого входа в Kimi Code запустите `kimi` и выполните `/login`.
 
 ## Применение
 
-После изменений:
+```bash
+nix-update
+```
+
+Или вручную:
 
 ```bash
-nix flake lock
 sudo nixos-rebuild switch --flake .#<profile>
 ```
 
-Затем выйти из GNOME и войти снова, если менялись dconf-настройки.
+После изменения dconf или списка расширений выйдите из GNOME и войдите снова. Управляемые Home Manager ключи перезаписывают ручные изменения через `gsettings`.
 
-## Поведение
-
-Home Manager управляет конфигурационными файлами Ghostty и dconf-настройками.
-При конфликте существующие файлы сохраняются с суффиксом `.hm-backup-<время>`.
+При конфликте существующий файл сохраняется с суффиксом `.hm-backup-<время>`. Резервные копии периодически проверяйте и удаляйте вручную.

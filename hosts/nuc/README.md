@@ -1,82 +1,54 @@
 # Intel NUC nuc
 
-Оборудование: NUC8i7HVK, Core i7-8809G, 32 ГБ ОЗУ, Intel HD 630
-(i915), Radeon RX Vega M GH (amdgpu), Intel I219-LM/I210 Ethernet,
-Intel Wireless 8265, UEFI.
+Оборудование: NUC8i7HVK, Core i7-8809G, Intel HD 630, Radeon RX Vega M GH, Intel Wireless 8265, UEFI.
 
-Профиль .#nuc зарегистрирован в flake.nix. Общие модули:
-modules/common.nix, modules/gnome.nix, modules/gaming.nix.
-Набор приложений соответствует 02i0132, включая Steam, GameMode,
-LibreOffice, Telegram, MAX, Obsidian, Pinta, Remmina, Transmission
-и Amnezia VPN. В nuc и 02i0132 включён Zed (`zed-editor`); запуск: `zeditor`. VS Code не включён.
+Профиль `.#nuc` включает офисные приложения, Telegram, Obsidian, Pinta, Remmina, Transmission, Zed с Kimi Code CLI, Astra Monitor, MAX и QEMU/KVM. Steam, GameMode и Amnezia VPN не подключены. Автоматический вход пользователя `nikolaev` включён.
 
-UUID установленной NixOS:
-- EFI: 2AE2-E8A4.
-- Btrfs: fc64e8f1-e978-4846-87c6-18308d6a81ce.
-- Подтома: @root, @home, @nix, @log.
+## Диски
 
-Диски:
-- NVMe 232,9 ГиБ: NixOS, EFI и Btrfs.
-- NVMe 931,5 ГиБ: ext4 Data, UUID 0ae52be7-d75e-4044-8367-a8687251a8cb,
-  монтируется в /mnt/Data.
+- EFI: `2AE2-E8A4`, монтируется в `/boot`.
+- Системный Btrfs: `fc64e8f1-e978-4846-87c6-18308d6a81ce`.
+- Подтома: `@root`, `@home`, `@nix`, `@log`.
+- Дополнительный ext4 Data: `0ae52be7-d75e-4044-8367-a8687251a8cb`, монтируется в `/mnt/Data` по обращению с `nofail`.
 
-План подтверждён: NixOS устанавливается с очисткой SSD 232,9 ГиБ;
-диск Data 931,5 ГиБ сохраняется без форматирования.
-Имена nvme0n1/nvme1n1 могут изменяться. Для выбора диска используйте
-модель, размер и серийный номер. Этот профиль не содержит форматирования
-; Data монтируется по UUID в /mnt/Data при обращении.
-Права и содержимое Data не изменяются.
-
-## QEMU/KVM
-
-Модуль virtualisation.nix подключён через apps.nix: QEMU/KVM, libvirt,
-virt-manager, virt-viewer, TPM через swtpm, общие папки через virtiofsd
-и перенаправление USB через SPICE.
-Пользователь nikolaev добавлен в группы libvirtd и kvm.
-В BIOS/UEFI должна быть включена Intel Virtualization Technology (VT-x).
-
-После первого применения готового профиля перезагрузитесь и проверьте:
+Перед первым применением:
 
 ```sh
-ls -l /dev/kvm
-virsh -c qemu:///system list --all
-```
-
-Для создания VM откройте Virtual Machine Manager в меню GNOME.
-Подключение: QEMU/KVM system (qemu:///system).
-Если сеть default не запущена, проверьте virsh -c qemu:///system net-list --all;
-для существующей сети default включите net-autostart default и net-start default.
-Операции virsh выполняются с -c qemu:///system.
-
-Образы VM по умолчанию хранятся на системном диске в /var/lib/libvirt/images.
-Перенос на Data нужно настроить отдельно после проверки его монтирования.
-Профиль готов к первой сборке; работа на оборудовании ещё требует проверки.
-
-## Первое применение
-
-Сверьте UUID выше с lsblk -f. Затем:
-
-```sh
+lsblk -f
+findmnt -t btrfs -o TARGET,SOURCE
 git clone https://github.com/nikolaevmpf/gnome-config.git ~/gnome-config
 cd ~/gnome-config
 sudo nixos-rebuild boot --flake .#nuc
+sudo reboot
 ```
 
-Если каталог уже существует, вместо клонирования выполните git pull --ff-only.
-После успешной сборки выполните sudo reboot. После перезагрузки:
+При расхождении UUID измените `hosts/nuc/disks.nix` или `hosts/nuc/mounts.nix`. Конфигурация не форматирует диски и не меняет права на Data.
+
+После перезагрузки:
 
 ```sh
 hostname
-ls /mnt/Data
 findmnt /mnt/Data
+systemctl --failed
 ls -l /dev/kvm
 virsh -c qemu:///system list --all
 ```
 
-Последующие изменения применяются командой nix-update.
-До первого применения hostname nixos относится к базовой установке:
-не запускайте автоматический выбор профиля, используйте явно .#nuc.
+До первого применения не используйте автоматический выбор профиля `nix-update`: исходный hostname `nixos` соответствует `vm`. После настройки используйте `nix-update`.
 
-## Home Manager
+## QEMU/KVM
 
-Пользовательские приложения и GNOME перенесены в `home/`; GNOME — в `home/hosts/nuc-gnome.nix`, Dock — в `home/hosts/nuc-dock.nix`, приложения и Ghostty — в `home/hosts/nuc.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).
+Роль `modules/roles/virtualization.nix` включает libvirtd, virt-manager, virt-viewer, swtpm, virtiofsd и SPICE USB. Пользователь входит в группы `libvirtd` и `kvm`. В UEFI должна быть включена Intel VT-x.
+
+Образы по умолчанию хранятся в `/var/lib/libvirt/images`. Перенос на `/mnt/Data` выполняется отдельно после проверки монтирования.
+
+## MAX
+
+Установка выполняется службой `install-max` из Flathub. Диагностика и ручное обновление:
+
+```sh
+journalctl -u install-max --no-pager -n 50
+sudo flatpak update --system ru.max.MAX
+```
+
+Общая структура Home Manager описана в [HOME-MANAGER.md](../../HOME-MANAGER.md).

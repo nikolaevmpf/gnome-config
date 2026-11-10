@@ -1,103 +1,50 @@
 # Рабочая машина 02i0132
 
-Профиль `.#02i0132`: GNOME/GDM, Firefox, Ghostty, Dash to Dock,
-общие настройки интерфейса, сеть, PipeWire и автоматическая очистка Nix.
-Для игр включены Steam и GameMode; Steam закреплён в Dash to Dock по умолчанию.
-Для работы установлены LibreOffice, Telegram Desktop, Obsidian, Pinta и Remmina.
-Для торрентов установлен Transmission 4 с интерфейсом GTK.
-MAX устанавливается автоматически через Flatpak из Flathub при наличии интернета.
-Это упаковка сообщества, использующая приложение из официального репозитория MAX.
-Настройки руля в этот профиль не включены.
+Оборудование: ASRock H670M Pro RS, RTX 2080 Ti (Turing), 32 ГБ ОЗУ, UEFI.
 
-Оборудование: ASRock H670M Pro RS, RTX 2080 Ti (TU102), 32 ГБ ОЗУ.
-Загрузка UEFI через systemd-boot; используется стабильный драйвер NVIDIA
-с открытыми модулями ядра, поддерживающими Turing.
+Профиль `.#02i0132` включает GNOME, Firefox, Ghostty, Dash to Dock, Astra Monitor, LibreOffice, Telegram, Obsidian, Pinta, Remmina, Transmission, Zed с Kimi Code CLI, Steam и GameMode. MAX устанавливается системной службой `install-max` из Flathub. Amnezia VPN и настройки руля не подключены.
 
-UUID прочитаны с фотографии установленной системы:
+## Диски
+
 - EFI: `0AD0-16F9`, монтируется в `/boot`.
 - Btrfs: `ac990355-a3db-4b1e-b1a6-4ddee4e9cb3e`.
-- Подтома установщика: `@root`, `@home`, `@nix`, `@log`.
+- Подтома: `@root`, `@home`, `@nix`, `@log`.
 
-## Первое применение
+Перед первым применением сверьте UUID:
 
-Сначала проверьте UUID командой `lsblk -f` и подтома командой
-`findmnt -t btrfs -o TARGET,SOURCE`. При расхождении исправьте
-`hosts/02i0132/default.nix` до сборки. Конфигурация не форматирует диск.
+```sh
+lsblk -f
+findmnt -t btrfs -o TARGET,SOURCE
+```
 
-Если репозитория ещё нет:
+При расхождении исправьте `hosts/02i0132/disks.nix`. Затем:
 
 ```sh
 git clone https://github.com/nikolaevmpf/gnome-config.git ~/gnome-config
 cd ~/gnome-config
-```
-
-Если он уже скачан:
-
-```sh
-cd ~/gnome-config
-git pull --ff-only
-```
-
-Проверьте наличие обоих устройств и создайте новое загрузочное поколение:
-
-```sh
-test -e /dev/disk/by-uuid/0AD0-16F9 &&
-test -e /dev/disk/by-uuid/ac990355-a3db-4b1e-b1a6-4ddee4e9cb3e &&
 sudo nixos-rebuild boot --flake .#02i0132
-```
-
-Перезагрузитесь только после успешного завершения сборки:
-
-```sh
 sudo reboot
 ```
 
-После перезагрузки:
-
-```sh
-hostname
-nvidia-smi
-findmnt -t btrfs -o TARGET,SOURCE
-```
-
-При проблемах выберите предыдущее поколение NixOS в меню загрузки.
-Для последующих обновлений используйте
-`sudo nixos-rebuild switch --flake .#02i0132`.
-
-Сборка и работа на оборудовании должны быть проверены на этой машине.
+Конфигурация не форматирует диск. После загрузки проверьте `hostname`, `nvidia-smi`, `systemctl --failed` и точки монтирования. Для последующих обновлений используйте `nix-update`.
 
 ## MAX
 
-Первая установка MAX и его среды Flatpak требует интернета и может занять
-несколько минут. При ошибке служба повторяет попытку через минуту.
+Первая установка требует интернета; при ошибке служба повторяет попытку через минуту.
 
 ```sh
 journalctl -u install-max --no-pager -n 50
 flatpak run ru.max.MAX
-```
-
-После первого включения Flatpak выйдите из GNOME и войдите снова, если MAX
-не появился в меню. Последующие обновления MAX выполняются отдельно от NixOS:
-
-```sh
 sudo flatpak update --system ru.max.MAX
 ```
 
-Если Steam не появился в Dock из-за сохранённых настроек пользователя:
-
-```sh
-gsettings reset org.gnome.shell favorite-apps
-```
+Если значок не появился после первой установки Flatpak, перезайдите в GNOME.
 
 ## Сон и NVIDIA
 
-Для восстановления после S3 включено сохранение видеопамяти и службы
-NVIDIA suspend/resume. Используется systemd-интерфейс вместо kernel suspend
-notifier; временные данные видеопамяти сохраняются на диске в `/var/tmp`.
-Оставляйте около 12 ГиБ свободного места на его файловой системе.
+Включены открытые модули NVIDIA, modesetting и сохранение видеопамяти в `/var/tmp`. Оставляйте около 12 ГиБ свободного места. Гибернация на дисковый swap не настроена.
 
-После изменения этих параметров выполните `nix-update` и перезагрузку.
-Проверьте:
+После изменения параметров NVIDIA выполните `nix-update` и перезагрузку. Проверка:
 
 ```sh
 grep -E 'PreserveVideoMemoryAllocations|UseKernelSuspendNotifiers|TemporaryFilePath' /proc/driver/nvidia/params
@@ -105,36 +52,11 @@ systemctl status nvidia-suspend.service nvidia-resume.service --no-pager
 df -h /var/tmp
 ```
 
-До первого сна службы oneshot могут показывать inactive (dead).
-Сохраните работу перед проверкой `systemctl suspend`.
-При повторной ошибке:
+Сохраните работу перед проверкой `systemctl suspend`. При ошибке:
 
 ```sh
-sudo journalctl -b -k --no-pager | grep -Ei 'NVRM|Xid|suspend|resume|PM:'
-sudo journalctl -b -u nvidia-suspend.service -u nvidia-resume.service --no-pager
+sudo journalctl -b -1 -k --no-pager | grep -Ei 'NVRM|Xid|suspend|resume|PM:'
+sudo journalctl -b -1 -u nvidia-suspend.service -u nvidia-resume.service --no-pager
 ```
 
-Эта настройка относится к сну; гибернация на дисковый swap отдельно
-не настроена. Исправление требует проверки на оборудовании.
-
-## Amnezia VPN
-
-Клиент и его фоновая служба включены через
-`programs.amnezia-vpn.enable = true;`.
-После применения конфигурации откройте Amnezia VPN в меню GNOME
-и импортируйте свой ключ или конфигурацию подключения.
-Проверка службы: `systemctl status AmneziaVPN --no-pager`.
-
-В профиль включён Zed (`zed-editor`); запуск из меню GNOME или командой `zeditor`. VS Code не включён.
-
-## Home Manager
-
-Пользовательские приложения и GNOME перенесены в `home/`; GNOME — в `home/hosts/02i0132-gnome.nix`, Dock — в `home/hosts/02i0132-dock.nix`, приложения и Ghostty — в `home/hosts/02i0132.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).
-
-## Мониторинг в верхней панели
-
-На 02i0132 включены Astra Monitor вместе с Dash to Dock.
-Пакеты и включение расширений находятся в `home/hosts/02i0132-monitoring.nix`.
-Применение: `nix-update`, затем выйти из GNOME и войти снова.
-Настройки показателей открываются через приложение «Расширения» для каждого расширения.
-Vitals удалён из конфигурации.
+Работу сна и драйвера необходимо проверять на этом оборудовании. Общая структура Home Manager описана в [HOME-MANAGER.md](../../HOME-MANAGER.md).

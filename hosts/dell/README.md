@@ -1,37 +1,30 @@
 # Dell Latitude 3410
 
-Профиль `dell`: Intel UHD Comet Lake-U (i915), Intel AX201 (iwlwifi), UEFI,
-KIOXIA NVMe 256 ГБ. EFI UUID: `56FE-B413`; Btrfs UUID:
-`2629ed44-c0b4-447f-b5bf-8df2f8bc698b`.
-Подтома: @root → /, @home → /home, @nix → /nix, @log → /var/log.
+Оборудование: Intel UHD Comet Lake-U, Intel AX201, KIOXIA NVMe 256 ГБ, UEFI.
 
-Общие GNOME, Firefox, Ghostty, Steam и GameMode; LibreOffice, Transmission,
-QEMU/KVM, libvirt, virt-manager, virt-viewer, swtpm, virtiofsd и SPICE USB.
-Включены firmware, microcode Intel, Bluetooth, libinput и профили питания.
-MOZA, NVIDIA и отдельный диск /games не подключены. Автовход не включён.
+Профиль `.#dell` включает GNOME, Firefox, Ghostty, Dash to Dock, Astra Monitor, LibreOffice, Transmission и QEMU/KVM. Steam, GameMode, Zed, MAX, NVIDIA и MOZA не подключены. Включены Intel microcode, Bluetooth, libinput, power-profiles-daemon и Thermald; автоматический вход отключён.
 
-## Первое применение
+## Диски
 
-Сверьте UUID с `lsblk -f`. Для новой рабочей копии:
+- EFI: `56FE-B413`, монтируется в `/boot`.
+- Btrfs: `2629ed44-c0b4-447f-b5bf-8df2f8bc698b`.
+- Подтома: `@root`, `@home`, `@nix`, `@log`.
 
-```bash
+Перед первым применением сверьте UUID и создайте загрузочное поколение:
+
+```sh
+lsblk -f
 git clone https://github.com/nikolaevmpf/gnome-config.git ~/gnome-config
 cd ~/gnome-config
-nix flake lock
-sudo nixos-rebuild boot --flake "path:$PWD#dell"
-```
-
-Если репозиторий уже существует, выполните `git pull --ff-only` вместо клонирования.
-После успешной сборки:
-
-```bash
+sudo nixos-rebuild boot --flake .#dell
 sudo reboot
 ```
 
-До первого применения не используйте nix-update: базовый hostname nixos выбирает vm.
-После перезагрузки проверьте:
+Конфигурация не форматирует диск. До первого применения не используйте `nix-update`, поскольку исходный hostname `nixos` выбирает профиль `vm`.
 
-```bash
+После перезагрузки:
+
+```sh
 hostname
 systemctl --failed
 findmnt -t btrfs -o TARGET,SOURCE
@@ -40,12 +33,6 @@ ls -l /dev/kvm
 virsh -c qemu:///system list --all
 ```
 
-Последующие обновления: `nix-update`, версии пакетов: `nix-update --upgrade`.
-В UEFI должна быть включена виртуализация Intel VT-x.
-Проверьте звук, Bluetooth, тачпад, яркость, батарею и восстановление после сна.
-Гибернация на дисковый swap не настроена; zram используется для обычного swap.
-Конфигурация не форматирует диск. Сборка и работа на ноутбуке требуют проверки.
+В UEFI должна быть включена Intel VT-x. Проверьте звук, Bluetooth, тачпад, яркость, батарею и сон. Гибернация на дисковый swap не настроена; используется zram. Последующие обновления: `nix-update`, обновление входов: `nix-update --upgrade`.
 
-## Home Manager
-
-Пользовательские приложения и GNOME перенесены в `home/`; GNOME — в `home/hosts/dell-gnome.nix`, Dock — в `home/hosts/dell-dock.nix`, приложения и Ghostty — в `home/hosts/dell.nix`. Старый `terminal.nix` и сервис `ghostty-host-config` удалены. Применение вместе с NixOS через `nix-update`. При первом переходе сначала создайте lock от пользователя: `nix flake lock "path:$PWD"` из `~/gnome-config`. Подробности: [HOME-MANAGER.md](../../HOME-MANAGER.md).
+Общая структура Home Manager описана в [HOME-MANAGER.md](../../HOME-MANAGER.md).
