@@ -2,7 +2,7 @@ _:
 let
   ghosttyConfig = ''
     font-family = JetBrains Mono
-    font-size = 12
+    font-size = 14
     background = #000000
     foreground = #e6e6e6
     background-opacity = 1
