@@ -20,7 +20,6 @@
     "firefox.desktop"
     "com.mitchellh.ghostty.desktop"
     "org.gnome.Nautilus.desktop"
-    "steam.desktop"
     "obsidian.desktop"
     "ru.max.MAX.desktop"
     "org.telegram.desktop.desktop"
