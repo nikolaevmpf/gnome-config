@@ -52,6 +52,7 @@
           ./modules/roles/work.nix
           ./modules/roles/browsing.nix
           ./modules/roles/gaming.nix
+          ./modules/roles/virtualization.nix
           ./modules/roles/development.nix
           ./modules/roles/max.nix
         ];
